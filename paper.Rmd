@@ -25,6 +25,8 @@ rm(list=ls())
 **Juan Carlos Castillo** - juancastillov@uchile.cl, [jc-castillo.com](http://jc-castillo.com)
 <br>**Francisco Meneses, Julio Iturra, Luis Maldonado & Jorge Atria**
 
+**Probando add desde branch**
+
 
 # Introducción
 
@@ -58,7 +60,7 @@ Los estudios de desigualdad y justicia social han sido nutridos desde múltiples
 
 Desde la sociología se ha dado tradicionalmente un acento empírico al estudio de la desigualdad. Esta disciplina no solo tempranamente abordó el estudio de la distribución objetiva de los recursos en una población, sino que también pueden observarse reflexiones en torno al modo en cómo los sujetos perciben y  justifican la desigualdad existente [@kluegel_beliefs_1986; @kluegel_social_1995-1; @huber_Income_1973; @mason_Marketing_2000; @mau_Ungleichheitsund_1997; @stollte_Legitimation_1983]. De manera más reciente, se han incorporado a este tipo de estudios el concepto de actitudes y percepciones hacia la desigualdad económica, relacionando dichos conceptos con la justificación de la desigualdad [@ardanaz_preferences_2009; @evans_justifications_2010; @gijsberts_legitimation_1999-1; @hadler_why_2005; @janmaat_subjective_2013-1; @kenworthy_inequality_2007; @kuhn_subjective_2005; @liebig_justice_2013] .
 
-El estudio de la desigualdad en términos subjetivos se puede abordar desde distintas perspectivas y metodologías. Una línea que posee un claro énfasis comparativo internacional es la que se establece mediante el International Social Justice Project, que realiza la primera encuesta comparativa internacional en temas de justicia y desigualdad en países capitalistas y postcomunistas en el año 1991 [@kluegel_social_1995-1]. Desde ese entonces un desafío en este tipo de investigación tiene que ver con la manera de abordar el tema de desigualdad. Una de las principales limitaciones de preguntas directas acerca de desigualdad (en particular sobre desigualdad percibida) es que la mayor parte de la población actualmente tiende  declarar una alta desigualdad, generando escasa variabilidad y por lo tanto haciendo difícil capturar diferencias entre personas y en el tiempo  [@castillo_percepcion_2012]. Al respecto, una posible alternativa para analizar tanto percepción como justificación de desigualdad mediante encuestas consiste en medidas indirectas de desigualdad salarial subjetiva, conocidas como brechas salariales percibidas y justas [@castillo_cual_2009]:
+El estudio de la desigualdad en términos subjetivos se puede abordar desde distintas perspectivas y metodologías. Una línea que posee un claro énfasis comp}arativo internacional es la que se establece mediante el International Social Justice Project, que realiza la primera encuesta comparativa internacional en temas de justicia y desigualdad en países capitalistas y postcomunistas en el año 1991 [@kluegel_social_1995-1]. Desde ese entonces un desafío en este tipo de investigación tiene que ver con la manera de abordar el tema de desigualdad. Una de las principales limitaciones de preguntas directas acerca de desigualdad (en particular sobre desigualdad percibida) es que la mayor parte de la población actualmente tiende  declarar una alta desigualdad, generando escasa variabilidad y por lo tanto haciendo difícil capturar diferencias entre personas y en el tiempo  [@castillo_percepcion_2012]. Al respecto, una posible alternativa para analizar tanto percepción como justificación de desigualdad mediante encuestas consiste en medidas indirectas de desigualdad salarial subjetiva, conocidas como brechas salariales percibidas y justas [@castillo_cual_2009]:
 
 ![](input/images/gaps.png)
 
@@ -78,7 +80,7 @@ En general las teorías respecto a los determinantes de las preferencias conside
 
 # Resultados
 
-## Desigualdad percibida y justa: salarios absolutos
+## Desigualdad percibida y salarios reales
 
 En primer lugar se exponen las percepciones y justificaciones respecto a las diferencias salariales entre obreros y gerentes. Para ello utilizaremos la mediana reportada por los entrevistados, la cual es un mejor indicador de tendencia central de montos en pesos al no estar afectado por posibles valores altos en los extremos.
 
@@ -86,11 +88,19 @@ En primer lugar se exponen las percepciones y justificaciones respecto a las dif
 
 ![](output/images/salario_per.png)
 
-Lo primero que destaca de este gráfico son los cambios en la percepción de salarios tanto para obreros como para gerentes, con un claro aumento en el tiempo. A primera vista lo más evidente es el aumento en la percepción del salario del gerent: el salario percibido del obrero solo aumento $210.000 entre estos años, mientras que el del gerente alcanza un incremento de $5.000.000. entre 1999 y 2019. No obstante, es relevante notar que el salario percibido del obrero creció más que el del gerente en términos proporcionales entre 1999 y 2009, puesto que mientras el primero aumenta más de tres veces, el segundo no alcanza a superar las 3 veces de aumento (incremento de 2,7).
+- XX Fco: agrandar tamaño de letra para todo el gráfico
 
-Resulta interesante que la mediana del salario el obrero se aproxima bastante al monto del salario mínimo del año respectivo. Esto nos lleva a deducir dos cosas: primero, las personas son conscientes del salario mínimo y, segundo, que asocian el salario de un obrero al salario mínimo. En cuanto al salario percibido para el gerente, éste posee una mayor varianza que el del obrero, lo que indica que hay un menor consenso en la población respecto a cuánto gana un gerente. Esto puede deberse a los distintos tipos de gerente que se están imaginando las personas al responder. Por ejemplo, según el estudio de la empresa internacional @roberthalf_Guia_2019 (encargada de reclutar de gerentes para el área de finanzas) en Chile el salario de un director de finanzas de una PYME o mediana empresa varía entre $5.000.000 y $9.500.000, mientras que el gerente de una gran empresa (sobre UF 100.000) gana entre $6.800.000 y $15.500.000 en promedio. Esto nos demuestra que existe gran diferencia entre un alto cargo de una empresa pequeña en relación con los altos cargos de una gran empresa.
+Lo primero que destaca de este gráfico son los cambios en la percepción de salarios tanto para obreros como para gerentes, con un claro aumento en el tiempo. A primera vista lo más evidente es el aumento en la percepción del salario del gerente: el salario percibido del obrero solo aumento $210.000 entre estos años, mientras que el del gerente alcanza un incremento de $5.000.000. entre 1999 y 2019. No obstante, es relevante notar que el salario percibido del obrero creció más que el del gerente en términos proporcionales entre 1999 y 2009, puesto que mientras el primero aumenta más de tres veces, el segundo no alcanza a superar las 3 veces de aumento (incremento de 2,7).
+
+Ahora bien, ¿qué tanto calza la percepción de desigualdad con la mediana real de salarios para cada año? Para ello, utilizaremos datos oficiales de la encuesta de caracterización socioeconómica CASEN para los años respectivos (XX nota al pie con el detalle de los análisis). Los resultados se muestran en el gráfico siguiente:
+
+- Fco: gráfico de comparación percibido-real agrupados por ocupación/año; es decir: obrero/años/real y percibido, lo mismo para gerente.
+
+Resulta interesante que la mediana del salario el obrero se aproxima bastante al monto del salario real del año respectivo. Esto nos lleva a deducir dos cosas: primero, las personas son conscientes en general de los montos de salario mínimo y, segundo, que asocian el salario de un obrero al salario mínimo. En cuanto al salario percibido para el gerente, vemos que es en general subestimado en todos los años y además con un creciente aumento en este sesgo perceptual. Es relevante considerar además que el salario percibido del gerente posee una mayor varianza que el del obrero, lo que indica que hay un menor consenso en la población respecto a cuánto ganan las personas en estas ocupaciones. Esto puede deberse a los distintos tipos de gerente que se están imaginando las personas al responder. Por ejemplo, según el estudio de la empresa internacional @roberthalf_Guia_2019 (encargada de reclutar de gerentes para el área de finanzas) en Chile el salario de un director de finanzas de una PYME o mediana empresa varía entre $5.000.000 y $9.500.000, mientras que el gerente de una gran empresa (sobre UF 100.000) gana entre $6.800.000 y $15.500.000 en promedio. Esto nos demuestra que existe gran diferencia entre un alto cargo de una empresa pequeña en relación con los altos cargos de una gran empresa.
 
 En suma, tenemos que ha aumentado la percepción de ambos salarios. Estos salarios percibidos no escapan radicalmente de la realidad, ya que coinciden con el salario mínimo y con el salario que ganan los gerentes, pero que en el caso de los gerentes muestran una mayor variabilidad.
+
+## Salarios justos
 
 Pasando de la percepción de salarios al análisis de salarios considerados justos, el siguiente gráfico nos muestra las medianas de los salarios justos para obrero y gerente en los tres puntos en el tiempo analizados:
 
