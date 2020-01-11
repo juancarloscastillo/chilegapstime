@@ -1,3 +1,3 @@
-# chilegapstime
+# Changes in perception and justification of inequality in Chile 1999-2019
 
-Changes in perception and justification of inequality in Chile
+(repo chilegapstime)

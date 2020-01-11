@@ -1,0 +1,38 @@
+bitacora
+
+
+- hacer grafico que sean tres graficos uno por año y cada uno con justa percibida y real para gerente y obrero. 
+
+- la variable ingreso gerente casen 2017 esta mal filtrada por granempresa, y no por patron. la variable no me funciona bien 
+
+	- El problema radica en que los filtros: gran empresa y dueño, no poseen casos en las bases. En la casen 2017 no hay gerentes dueños de empresas, (pero si gerentes de grandes empresas) y el 2000 no hay gerentes dueños de grandes empresas. 	Al usar gran empresa los ingresos de los primeros años no son tan altos. 
+	- al usar ambas brechas en el año 2009, unico en el cual contamos con 2 gerentes dueños de grandes empresas, la brecha pasa a ser 52. tenemos un problema de representividad. 
+ 	
+
+
+
+
+----- hacer lectura de los graficos y tablas
+----- en las trbalas con educacion dar vuelta los niveles educativos y dejarlos en blanco y negro. 
+
+
+
+recordar:
+-hay un cambio de fraceo fundamental del 1999 al 2009 en la pregunta de meritocracia, mientras una alude más al generico el esfuerzo es importante, la más antigua pregunta si en chile las personas son recompensadas por sus esfuerzos. Esto expplica en parte la variacion. -- sacar de la comparacion general. 
+
+
+
+
+
+
+
+calve compu 1234
+
+
+-------### encuesta suplementaria de ingresos
+
+- b15_1 # catidad de trabajadores 5 = más de 200
+- cise  # 1 = empleador 
+- d1_opcionb 
+
+
