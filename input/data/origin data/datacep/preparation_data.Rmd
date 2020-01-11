@@ -1,0 +1,335 @@
+---
+title: 'Data preparation'
+author: ""
+output:
+    html_document:
+        smart: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#Variables
+
+## variables cenrtrales
+
+- Redistribucion. 
+
+- brechas salariales 
+
+## variables de control 
+
+- satisfaccion con el ingreso
+
+- educacion ingresos
+
+- posicion politicia
+
+- meritocracia  
+
+
+
+
+
+
+```{r}
+library(haven)
+library(dplyr)
+```
+#2000
+```{r}
+load(file="cep00.Rdata")
+
+#sjPlot::view_df(cep00, show.frq = T, max.len = 30 )#hacer codebook
+
+dat00 <- cep00 %>% dplyr::select( 
+  
+  
+  te7b, # es resp. del E. reducir las dif. 
+  te3c, # grandes dif. en ingr. son nec. para la prosp. de Chile
+  
+                                  
+  t5fc, # sal per  gerente-dueño de empresa
+  t5hc, # sal per  obrero no calificado de fabrica
+  t6hc, # sal jus obrero no calificado 
+  t6fc, # sal jus gerente
+                                  
+  te16, #¿Es justa su remuneración?	 	
+  dat_6, # Educ
+  dat_23, # ingreso tramos hogar ¿o debo usar propio?
+  te2a, # se paga por esfuerzo 
+  p7t, #posision politica total mensiones
+                                  )
+
+
+#sjPlot::view_df(dat00, show.frq = T, max.len = 30)#hacer codebook
+dat00$te7b  <- car::recode(dat00$te7b  ,"c(8,9)=NA",as.numeric = TRUE) # Recodificación missing
+dat00$te3c  <- car::recode(dat00$te3c  ,"c(8,9)=NA",as.numeric = TRUE) # Recodificación missing
+dat00$t5fc  <- car::recode(dat00$t5fc  ,"c(88,99)=NA",as.numeric = TRUE) # Recodificación missing
+
+dat00$t5hc  <- car::recode(dat00$t5hc  ,"c(88,99)=NA",as.numeric = TRUE) # Recodificación missing
+dat00$t6hc  <- car::recode(dat00$t6hc  ,"c(88,99)=NA",as.numeric = TRUE) # Recodificación missing
+dat00$t6fc  <- car::recode(dat00$t6fc  ,"c(88,99)=NA",as.numeric = TRUE) # Recodificación missing
+
+dat00$te16  <- car::recode(dat00$te16  ,"c(8,9)=NA",as.numeric = TRUE) # Recodificación missing
+dat00$dat_6 <- car::recode(dat00$dat_6  ,"c(9)=NA",as.numeric = TRUE) # Recodificación missing
+dat00$dat_23 <- car::recode(dat00$dat_23 ,"c(88,99)=NA",as.numeric = TRUE) # Recodificación missing
+
+dat00$te2a <- car::recode(dat00$te2a ,"c(8,9)=NA",as.numeric = TRUE) # Recodificación missing
+dat00$p7t <- car::recode(dat00$p7t ,"c(8,9)=NA",as.numeric = TRUE) # Recodificación missing
+
+
+dat00 <- dplyr::rename(dat00,
+                                  redis= te7b, # es resp. del E. reducir las dif. 
+                                  igual= te3c, # grandes dif. en ingr. son nec. para la prosp. de Chile
+                                  
+                                  salperger=t5fc, # sal per  gerente-dueño de empresa
+                                  salperobr=t5hc, # sal per  obrero no calificado de fabrica
+                                  saljusger=t6fc, # sal jus gerente
+                                  saljusobr=t6hc, # sal jus obrero no calificado
+                                  
+                                  educ= dat_6, # Educ
+                                  ingresos=dat_23, # ingreso tramos hogar ¿o debo usar propio?
+                                  permerit=te2a, # se paga por esfuerzo 
+                                  pospol=p7t #posision politica total mensiones
+                                  )
+
+
+sjPlot::view_df(dat00, show.frq = T, max.len = 30 )#hacer codebook
+
+```
+
+
+#---Perdidos salarios per/jus
+names(dat00)
+dat00 <- dat00 %>%
+  mutate(salperobr=replace(salperobr, salperobr <= 40000 | salperobr>= 1000000, NA)) %>%
+  mutate(salperger=replace(salperger, salperger <= 250000 | salperger>= 100000001, NA)) %>%
+  mutate(saljusobr=replace(saljusobr, saljusobr <= 40000, NA)) %>%
+  mutate(saljusger=replace(saljusger, saljusger <= 100000, NA))
+
+#---Brecha salarial percibida
+dat00$gap_perc   <-  as.numeric(dat00$salperger/dat00$salperobr) # diferencia total
+dat00$lngap_perc <-  as.numeric(log(dat00$gap_perc))                 # diferencia log
+#---Brecha salarial justa
+dat00$gap_just   <-  as.numeric(dat00$saljusger/dat00$saljusobr) # diferencia total
+dat00$lngap_just <-  as.numeric(log(dat00$gap_just))                # diferencia log
+
+
+
+
+
+
+
+
+```{r}
+load(file="cep09.Rdata")
+#sjPlot::view_df(cep09, show.frq = T)#hacer codebook
+
+dat09 <- cep09 %>% dplyr::select( TE2P16_B, # es resp. del gob.  reducir las dif. 
+                                  TE2P03, # igualitarismo: del 1-10 donde 1= y 10des, donde se ubica.
+                                  
+                                  
+                                  TE2P14_B, # sal per el presidente de una gran empresa nacional  
+                                  TE2P15_B, # sal jus el presidente de una gran empresa nacional 
+                                  TE2P14_D, # sal per obrero no calificado de fabrica
+                                  TE2P15_D, # sal jus obrero no calificado 
+                             
+                                  
+                                  
+                                  DDP06_ni, # Educ
+                                  DDP34, # ingreso tramos hogar ¿o debo usar propio?
+                                  TE2P11_E, # ¿Cuán importante cree que es Trabajar duro? ! esdistinto 
+                                  MBP16T, #posision politica total mensiones
+                                 
+                                  )
+
+
+
+dat09$TE2P16_B  <- car::recode(dat09$TE2P16_B  ,"c(8,9)=NA",as.numeric = TRUE) # Recodificación missing
+dat09$TE2P03  <- car::recode(dat09$TE2P03  ,"c(88,99)=NA",as.numeric = TRUE) # Recodificación missing
+dat09$DDP06_ni  <- car::recode(dat09$DDP06_ni  ,"c(99)=NA",as.numeric = TRUE) # Recodificación missing
+dat09$DDP34  <- car::recode(dat09$DDP34  ,"c(88,99)=NA",as.numeric = TRUE) # Recodificación missing
+dat09$TE2P11_E  <- car::recode(dat09$TE2P11_E  ,"c(8,9)=NA",as.numeric = TRUE) # Recodificación missing
+dat09$MBP16T <- car::recode(dat09$MBP16T  ,"c(8,9)=NA",as.numeric = TRUE) # Recodificación missing
+
+
+dat09 <- dplyr::rename(dat09,
+               salperger=TE2P14_B,
+               salperobr=TE2P15_B,
+               saljusger=TE2P14_D,
+               saljusobr=TE2P15_D,
+                                  redis= TE2P16_B, # es resp. del E. reducir las dif. 
+                                  igual= TE2P03, # del 1-10 donde 1= y 10des, donde se ubica.
+                              
+                                  educ= DDP06_ni, # Educ
+                                  ingresos=DDP34, # ingreso tramos hogar ¿o debo usar propio?
+                                  permerit=TE2P11_E, # se paga por esfuerzo 
+                                  pospol=MBP16T #posision politica total mensiones
+)
+                                  
+               
+                                 
+                                  
+      
+#--- missing brechas -------------------------------------------------#
+names(dat09)
+#dat99[2:5][dat99[2:5] >= 99999999998] <- NA
+
+
+dat09 <- dat09 %>%
+  mutate(salperobr=replace(salperobr, salperobr <= 40000 | salperobr>= 1000000, NA)) %>%
+  mutate(salperger=replace(salperger, salperger <= 250000 | salperger>= 100000001, NA)) %>%
+  mutate(saljusobr=replace(saljusobr, saljusobr <= 40000, NA)) %>%
+  mutate(saljusger=replace(saljusger, saljusger <= 100000, NA))
+#---Brecha salarial percibida
+dat09$gap_perc   <-  as.numeric(dat09$salperger/dat09$salperobr) # diferencia total
+dat09$lngap_perc <-  as.numeric(log(dat09$gap_perc))                 # diferencia log
+#---Brecha salarial justa
+dat09$gap_just   <-  as.numeric(dat09$saljusger/dat09$saljusobr) # diferencia total
+dat09$lngap_just <-  as.numeric(log(dat09$gap_just))                # diferencia log
+dim(na.omit(dat09))
+
+sjPlot::view_df(dat09, show.frq = T, max.len = 30)#hacer codebook
+
+
+```
+
+```{r}
+load( file = "cl19.Rdata")
+```
+
+
+```{r}
+#sjPlot::view_df(cl19, show.frq = T)#hacer codebook
+ dat19 <- cl19 %>% dplyr::select(m2_p2_presidente,m2_p2_obrero,  # Salario percibio obrero y gerente
+                           m2_p3_presidente,m2_p3_obrero,  # Salario justo    obrero y gerente
+                           
+                           m2_p4_2, # redistribucion
+                           mb_p20, # igualitarismo
+                           
+                           ds_p4, # Educacion
+                           ds_p39, #ingreso tramo hogar
+                           mb_p14, #pos politica
+                           m2_p1_5 # trabajo duro
+                           )
+#--- missing meritocracia -------------------------------------------------#
+# Percepcion
+  
+dat19$mb_p20  <- car::recode(dat19$mb_p20 ,"c(88, 99)=NA",as.numeric = TRUE) # Recodificación missing
+  dat19$ds_p39  <- car::recode(dat19$ds_p39 ,"c(88, 99)=NA",as.numeric = TRUE) # Recodificación missing
+  dat19$ds_p4  <- car::recode(dat19$ds_p4  ,"c(88,99)=NA",as.numeric = TRUE) # Recodificación missing
+dat19$mb_p14  <- car::recode(dat19$mb_p14  ,"c(8,9)=NA",as.numeric = TRUE) # Recodificación missing
+dat19$m2_p1_5  <- car::recode(dat19$m2_p1_5  ,"c(8,9)=NA",as.numeric = TRUE)
+dat19$m2_p4_2 <- car::recode(dat19$m2_p4_2 ,"c(8,9)=NA",as.numeric = TRUE)  
+  
+
+
+
+# Rename variables
+dat19 <- dplyr::rename(dat19,
+                salperger=m2_p2_presidente,
+                salperobr=m2_p2_obrero,
+                saljusger=m2_p3_presidente,
+                saljusobr=m2_p3_obrero,
+                permerit=m2_p1_5 ,
+                redis = m2_p4_2,
+                ingresos = ds_p39,
+                pospol=mb_p14,
+                educ=ds_p4,
+                igual=mb_p20)
+#--- missing brechas -------------------------------------------------#
+dat19 <- dat19 %>%
+  mutate(salperobr=replace(salperobr, salperobr <= 40000 | salperobr>= 1000000, NA)) %>%
+  mutate(salperger=replace(salperger, salperger <= 250000 | salperger>= 100000001, NA)) %>%
+  mutate(saljusobr=replace(saljusobr, saljusobr <= 40000, NA)) %>%
+  mutate(saljusger=replace(saljusger, saljusger <= 100000, NA))
+#---Brecha salarial percibida
+dat19$gap_perc   <-  as.numeric(dat19$salperger/dat19$salperobr) # diferencia total
+dat19$lngap_perc <-  as.numeric(log(dat19$gap_perc))                  # diferencia log
+#---Brecha salarial justa
+dat19$gap_just   <-  as.numeric(dat19$saljusger/dat19$saljusobr) # diferencia total
+dat19$lngap_just <-  as.numeric(log(dat19$gap_just))                # diferencia log
+
+sjPlot::view_df(dat19, show.frq = T)#hacer codebook
+ 
+
+
+```
+
+
+```{r}
+#sjPlot::view_df(dat19, show.frq = T)#hacer codebook
+#sjPlot::view_df(dat09, show.frq = T, max.len = 30)#hacer codebook
+#sjPlot::view_df(dat00, show.frq = T, max.len = 30 )#hacer codebook
+
+  summary(dat19$salperger)
+  summary(dat09$salperger)
+
+```
+
+
+
+#pack dummy 2009
+```{r}
+#redis
+
+dat09$redis<-ifelse(dat09$redis<=2,1,0)
+hist(dat09$redis)
+
+#pospol
+dat09$izquerda<-ifelse(dat09$pospol==5,1,0)
+dat09$c.izquerda<-ifelse(dat09$pospol==4,1,0)
+dat09$derecha<-ifelse(dat09$pospol==1,1,0)
+dat09$c.derecha<-ifelse(dat09$pospol==2,1,0)
+dat09$centro<-ifelse(dat09$pospol==3,1,0)
+dat09$independiente<-ifelse(dat09$pospol==6,1,0)
+dat09$ninguna<-ifelse(dat09$pospol==7,1,0)
+
+#permerit
+dat09$permerit<-ifelse(dat09$permerit<=3,1,0)
+
+```
+```{r}
+#redis
+
+dat19$redis<-ifelse(dat19$redis<=2,1,0)
+
+#pospol
+dat19$izquerda<-ifelse(dat19$pospol==5,1,0)
+dat19$c.izquerda<-ifelse(dat19$pospol==4,1,0)
+dat19$derecha<-ifelse(dat19$pospol==1,1,0)
+dat19$c.derecha<-ifelse(dat19$pospol==2,1,0)
+dat19$centro<-ifelse(dat19$pospol==3,1,0)
+dat19$independiente<-ifelse(dat19$pospol==6,1,0)
+dat19$ninguna<-ifelse(dat19$pospol==7,1,0)
+
+#permerit
+dat19$permerit<-ifelse(dat19$permerit<=3,1,0)
+
+```
+
+
+
+```{r}
+
+reg1<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat09)
+reg2<-glm(redis ~ lngap_perc + lngap_just +  c.izquerda + centro + c.derecha + derecha + independiente + ninguna + permerit + educ + ingresos, family = binomial, data=dat09)
+
+
+reg3<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat19)
+reg4<-glm(redis ~ lngap_perc + lngap_just +  c.izquerda + centro + c.derecha + derecha + independiente + ninguna + permerit + educ + ingresos, family = binomial, data=dat19)
+
+library(stargazer)  
+stargazer(list(reg1,reg2,reg3,reg4), type="text")  
+```
+
+```{r}
+dat00$year <- 1999
+dat09$year <- 2009
+dat19$year <- 2019
+save(dat00,file = "cep00.RData")
+save(dat09,file = "cep09.RData")
+save(dat19,file = "cep19.RData")
+
+```
