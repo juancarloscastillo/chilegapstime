@@ -192,7 +192,7 @@ dat99$redis <-set_labels(dat99$redis,labels= c("Muy en desacuerdo"=1, "En descac
 get_labels(dat99$redis, values="as.name")
 freq(to_label(dat99$redis))
 ```
-
+### e - estatus subjetivo
 
 ### Save 99 data
 
