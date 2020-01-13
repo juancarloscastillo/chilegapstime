@@ -14,6 +14,7 @@ editor_options:
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(warning = FALSE,message = FALSE, cache = TRUE)
+knitr::opts_knit$set(root.dir = "../")
 options(scipen=999)
 rm(list=ls())
 ```
@@ -30,6 +31,7 @@ rm(list=ls())
   library(kableExtra)
   library(GPArotation)
   library(lavaan)
+  library(stargazer)
 ```
 
 
@@ -347,14 +349,46 @@ table_jusger <- table_jusger %>% select(n,mean,sd,median,trimmed,min,max)
 table_jusger
 ```
 
-### 
-
-
-
-### Graphic Justice 
+### Graphss Justice 
 
 ```{r}
-# Add occupation & year to tables
+
+# Horizontal
+
+## Add occupation & year to tables
+
+table_jusob$ocup <-  1 # as.factor(c("Obrero"))
+table_jusob$year <- c(1999,2009,2019)
+
+table_jusger$ocup <- 2 # as.factor(c("Gerente"))
+table_jusger$year <- c(1999,2009,2019)
+
+table_justot <-rbind(table_jusger,table_jusob)
+str(table_justot)
+table_justot
+
+
+table_justot$ocup2 <- factor(table_justot$ocup, levels=c(2,1), labels=c("Gerente", "Obrero"))
+
+salario_justo <- ggplot(data=table_justot, aes(x=reorder(as.factor(year),-year), y=median, fill=ocup2)) +
+     geom_bar(position = 'dodge', stat='identity') +
+     geom_text(aes(label=format(median, big.mark = ",", scientific = FALSE), y=0), position=position_dodge(0.9), hjust=-0.25) +
+     theme_bw(base_size = 12) +
+     scale_y_continuous(labels = scales::comma) +
+     ylab('Salario justo (mediana)') + xlab('Años') +
+     scale_fill_brewer(palette="Paired") +
+     theme(legend.position="top") +
+     labs(fill = " ") +
+    coord_flip()
+
+
+salario_justo
+
+ ggsave(salario_justo,filename = "output/images/salario_justo.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
+ 
+ salario_justo
+
+# Justo y real
 
 table_jusob$ocup <-  1 # as.factor(c("Salario justo Obrero"))
 table_jusob$year <- c(1999,2009,2019)
@@ -371,11 +405,14 @@ salario_gerente$year <- c(1999,2009,2019)
 table_justot <-rbind(table_jusger,table_jusob, salario_obrero,salario_gerente)
 str(table_justot)
 
-# Horizontal
+table_justot
 
+ 
+ 
+  
 table_justot$ocup2 <- factor(table_justot$ocup, levels=c(4,3,2,1), labels=c("salarioreal gerente", "Salario real Obrero", "Salario justo Gerente", "Salario justo Obrero"))
 
-salario_justo <- ggplot(data=table_justot, aes(x=reorder(as.factor(year),-year), y=median, fill=ocup2)) +
+salario_justo_real <- ggplot(data=table_justot, aes(x=reorder(as.factor(year),-year), y=median, fill=ocup2)) +
      geom_bar(position = 'dodge', stat='identity') +
      geom_text(aes(label=format(median, big.mark = ",", scientific = FALSE), y=0), position=position_dodge(0.9), hjust=-0.25) +
      theme_bw(base_size = 12) +
@@ -386,14 +423,14 @@ salario_justo <- ggplot(data=table_justot, aes(x=reorder(as.factor(year),-year),
      labs(fill = " ") +
     coord_flip()
 
-salario_justo 
+salario_justo_real 
 
-ggsave(salario_justo,filename = "output/images/salario_justo.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+ggsave(salario_justo_real,filename = "output/images/salario_justo_real.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
 ```
 
 ## Brechas salariales. 
 
-### Brecha percivida 
+### Brecha percibida 
 ```{r}
 table_gap_perc<- rbind(psych::describe(dat99$gap_perc),
                psych::describe(dat09$gap_perc),
@@ -406,6 +443,8 @@ table_gap_perc <- table_gap_perc %>% select(n,mean,sd,median,trimmed,min,max)
 table_gap_perc
 
 ```
+
+
 ### Brecha justa
 ```{r}
 table_gap_just<- rbind(psych::describe(dat99$gap_just),
@@ -438,14 +477,14 @@ brecha_salarial
 
 # Add occupation & year to tables
 
-table_gap_perc$ocup <-  1 # as.factor(c("Obrero"))
-table_gap_perc$year <- c(1999,2009,2019)
-
-table_gap_just$ocup <- 2 # as.factor(c("Gerente"))
-table_gap_just$year <- c(1999,2009,2019)
-
 brecha_salarial$ocup <- 3 # as.factor(c("Gerente"))
 brecha_salarial$year <- c(1999,2009,2019)
+
+table_gap_perc$ocup <-  2 # as.factor(c("Obrero"))
+table_gap_perc$year <- c(1999,2009,2019)
+
+table_gap_just$ocup <- 1 # as.factor(c("Gerente"))
+table_gap_just$year <- c(1999,2009,2019)
 
 
 table_gap_total <-rbind(table_gap_perc,table_gap_just,brecha_salarial)
@@ -455,7 +494,8 @@ table_gap_total
 
 # Horizontal
 
-table_gap_total$ocup2 <- factor(table_gap_total$ocup, levels=c(3,2,1), labels=c("Real(casen)", "Justa", "Percibida"))
+table_gap_total$ocup2 <- factor(table_gap_total$ocup, levels=c(1,2,3), labels=c( "Justa", "Percibida", "Real"))
+
 
  brechas <- ggplot(data=table_gap_total, aes(x=reorder(as.factor(year),-year), y=median, fill=ocup2)) +
      geom_bar(position = 'dodge', stat='identity') +
@@ -466,11 +506,14 @@ table_gap_total$ocup2 <- factor(table_gap_total$ocup, levels=c(3,2,1), labels=c(
      scale_fill_brewer(palette="Paired") +
      theme(legend.position="top") +
      labs(fill = " ") +
+   guides(fill = guide_legend(reverse = TRUE)) +
     coord_flip()
- 
+
+brechas 
+  
  ggsave(brechas,filename = "output/images/Brechas.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
 
-brechas
+
 ```
 
 -VENDEN BIEN LAPOMA. 
@@ -482,8 +525,6 @@ load(file = "input/data/dataproc/cl09.RData")
 load(file = "input/data/dataproc/cl99.RData")
 load(file = "input/data/dataproc/cl19.RData")
 load(file = "input/data/dataproc/issp9919.RData")
-
-
 
 library("dplyr")
 library("corrplot")
@@ -721,8 +762,6 @@ table_ed_gapjus
 
 
 
-
-
 # Descriptivos de opciones redistributivas por año
 
 
@@ -747,9 +786,9 @@ ed1_redis09 = ed1_redis09 %>% filter(year == 2009) %>% as.data.frame()
 ed1_redis19 = ed_redis %>%  filter(Educacion == 1) %>% as.data.frame()
 ed1_redis19 = ed1_redis19 %>% filter(year == 2019) %>% as.data.frame()
 
-table_redis_ed1<- rbind(psych::describe(ed1_redis99$Redistriution),
-               psych::describe(ed1_redis09$Redistriution),
-               psych::describe(ed1_redis19$Redistriution))
+table_redis_ed1<- rbind(psych::describe(ed1_redis99$Redistribution),
+               psych::describe(ed1_redis09$Redistribution),
+               psych::describe(ed1_redis19$Redistribution))
 
 rownames(table_redis_ed1) <- c("1999","2009","2019")
 table_redis_ed1 <- table_redis_ed1 %>% select(n,mean,sd,median,trimmed,min,max)
@@ -770,9 +809,9 @@ ed2_redis09 = ed2_redis09 %>% filter(year == 2009) %>% as.data.frame()
 ed2_redis19 = ed_redis %>%  filter(Educacion == 2) %>% as.data.frame()
 ed2_redis19 = ed2_redis19 %>% filter(year == 2019) %>% as.data.frame()
 
-table_redis_ed2<- rbind(psych::describe(ed2_redis99$Redistriution),
-               psych::describe(ed2_redis09$Redistriution),
-               psych::describe(ed2_redis19$Redistriution))
+table_redis_ed2<- rbind(psych::describe(ed2_redis99$Redistribution),
+               psych::describe(ed2_redis09$Redistribution),
+               psych::describe(ed2_redis19$Redistribution))
 
 rownames(table_redis_ed2) <- c("1999","2009","2019")
 table_redis_ed2 <- table_redis_ed2 %>% select(n,mean,sd,median,trimmed,min,max)
@@ -792,9 +831,9 @@ ed3_redis09 = ed3_redis09 %>% filter(year == 2009) %>% as.data.frame()
 ed3_redis19 = ed_redis %>%  filter(Educacion == 3) %>% as.data.frame()
 ed3_redis19 = ed3_redis19 %>% filter(year == 2019) %>% as.data.frame()
 
-table_redis_ed3<- rbind(psych::describe(ed3_redis99$Redistriution),
-               psych::describe(ed3_redis09$Redistriution),
-               psych::describe(ed3_redis19$Redistriution))
+table_redis_ed3<- rbind(psych::describe(ed3_redis99$Redistribution),
+               psych::describe(ed3_redis09$Redistribution),
+               psych::describe(ed3_redis19$Redistribution))
 
 rownames(table_redis_ed3) <- c("1999","2009","2019")
 table_redis_ed3 <- table_redis_ed3 %>% select(n,mean,sd,median,trimmed,min,max)
@@ -816,9 +855,9 @@ ed4_redis09 = ed4_redis09 %>% filter(year == 2009) %>% as.data.frame()
 ed4_redis19 = ed_redis %>%  filter(Educacion == 4) %>% as.data.frame()
 ed4_redis19 = ed4_redis19 %>% filter(year == 2019) %>% as.data.frame()
 
-table_redis_ed4<- rbind(psych::describe(ed4_redis99$Redistriution),
-               psych::describe(ed4_redis09$Redistriution),
-               psych::describe(ed4_redis19$Redistriution))
+table_redis_ed4<- rbind(psych::describe(ed4_redis99$Redistribution),
+               psych::describe(ed4_redis09$Redistribution),
+               psych::describe(ed4_redis19$Redistribution))
 
 rownames(table_redis_ed4) <- c("1999","2009","2019")
 
@@ -837,9 +876,9 @@ ed_redis99 = ed_redis %>% filter(year == 1999) %>% as.data.frame()
 ed_redis09 = ed_redis %>% filter(year == 2009) %>% as.data.frame()
 ed_redis19 = ed_redis %>% filter(year == 2019) %>% as.data.frame()
 
-table_redis_ed<- rbind(psych::describe(ed_redis99$Redistriution),
-               psych::describe(ed_redis09$Redistriution),
-               psych::describe(ed_redis19$Redistriution))
+table_redis_ed<- rbind(psych::describe(ed_redis99$Redistribution),
+               psych::describe(ed_redis09$Redistribution),
+               psych::describe(ed_redis19$Redistribution))
 
 rownames(table_redis_ed) <- c("1999","2009","2019")
 table_redis_ed <- table_redis_ed %>% select(n,mean,sd,median,trimmed,min,max)
@@ -1118,7 +1157,7 @@ reggap99<- list(r99a,r99b,r99c,r99d,r99e)
 save(reggap99, file = "output/tables/reggap99.r")
 
 sink("output/tables/table1.txt")
-stargazer(list(a), type= "text")
+stargazer(list(reggap99), type= "text")
 sink()
 
 
