@@ -8,7 +8,7 @@ output:
         toc_float: true
         number_sections: true
         code_folding: show
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -232,10 +232,10 @@ salarios19$lngap_just <-  as.numeric(log(salarios19$gap_just))                # 
 
 # Descriptive analysis
 
-## Descriptive perception 
+## Descriptive perception
 
 ```{r}
-load("input/data/dataproc/dat99.RData")
+load("input/data/processed/dat99.RData")
 load("input/data/dataproc/dat09.RData")
 load("input/data/dataproc/dat19.RData")
 ```
@@ -305,7 +305,7 @@ salario_per
 
 
 ## Descriptive Justice
-### worker real 
+### worker real
 ```{r}
 load(file="input/data/dataproc/dataproccasen/salario_obrero.Rdata")
 rownames(salario_obrero)<-c("1999","2009","2019")
@@ -319,14 +319,14 @@ salario_obrero
 
 ### manager real
 ```{r}
-load(file="input/data/dataproc/dataproccasen/salario_gerente.Rdata") 
+load(file="input/data/dataproc/dataproccasen/salario_gerente.Rdata")
 rownames(salario_gerente)<-c("1999","2009","2019")
 salario_gerente <- salario_gerente %>% select(n,mean,sd,median,trimmed,min,max)
 salario_gerente
 ```
 
 
-### Worker justice 
+### Worker justice
 
 ```{r}
 table_jusob<- rbind(psych::describe(dat99$saljusobr),
@@ -349,7 +349,7 @@ table_jusger <- table_jusger %>% select(n,mean,sd,median,trimmed,min,max)
 table_jusger
 ```
 
-### Graphss Justice 
+### Graphs Justice
 
 ```{r}
 
@@ -385,7 +385,7 @@ salario_justo <- ggplot(data=table_justot, aes(x=reorder(as.factor(year),-year),
 salario_justo
 
  ggsave(salario_justo,filename = "output/images/salario_justo.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
- 
+
  salario_justo
 
 # Justo y real
@@ -407,9 +407,9 @@ str(table_justot)
 
 table_justot
 
- 
- 
-  
+
+
+
 table_justot$ocup2 <- factor(table_justot$ocup, levels=c(4,3,2,1), labels=c("salarioreal gerente", "Salario real Obrero", "Salario justo Gerente", "Salario justo Obrero"))
 
 salario_justo_real <- ggplot(data=table_justot, aes(x=reorder(as.factor(year),-year), y=median, fill=ocup2)) +
@@ -423,14 +423,14 @@ salario_justo_real <- ggplot(data=table_justot, aes(x=reorder(as.factor(year),-y
      labs(fill = " ") +
     coord_flip()
 
-salario_justo_real 
+salario_justo_real
 
 ggsave(salario_justo_real,filename = "output/images/salario_justo_real.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
 ```
 
-## Brechas salariales. 
+## Brechas salariales.
 
-### Brecha percibida 
+### Brecha percibida
 ```{r}
 table_gap_perc<- rbind(psych::describe(dat99$gap_perc),
                psych::describe(dat09$gap_perc),
@@ -509,14 +509,14 @@ table_gap_total$ocup2 <- factor(table_gap_total$ocup, levels=c(1,2,3), labels=c(
    guides(fill = guide_legend(reverse = TRUE)) +
     coord_flip()
 
-brechas 
-  
+brechas
+
  ggsave(brechas,filename = "output/images/Brechas.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
 
 
 ```
 
--VENDEN BIEN LAPOMA. 
+-VENDEN BIEN LAPOMA.
 
 # Brechas percibidas y justas segun nivel educativo
 
@@ -914,6 +914,72 @@ table_ed_redistribution
 ```
 
 
+# Mdelos de  Brechas salariales
+-> de referencia se tomaron las catogorias educacion basica e ingresos bajos.
+
+
+```{r}
+load("input/data/processed/dat99.RData")
+#sjPlot::view_df(dat99)
+
+names(dat99)
+
+r99a<-lm(lngap_perc ~ + as.factor(educ_rec) + as.factor(Quint), data=dat99)
+r99b<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint), data=dat99)
+r99c<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + lngap_perc, data=dat99)
+
+sink("output/tables/table99.txt")
+stargazer(list(r99a,r99b,r99c), type= "html")
+sink()
+
+
+
+```
+
+
+
+```{r}
+load(file="input/data/dataproc/dat09.RData")
+
+#sjPlot::view_df(dat09)
+
+r09a<-lm(gap_perc ~ permer ,data=dat09)
+r09b<-lm(gap_perc ~ permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat09)
+
+r09c<-lm(gap_just ~ gap_perc ,data=dat09)
+r09d<-lm(gap_just ~ gap_perc + permer ,data=dat09)
+r09e<-lm(gap_just ~ gap_perc + permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat09)
+
+reggap09<- list(r09a,r09b,r09c,r09d,r09e)
+save(reggap09, file = "output/tables/reggap09.r")
+
+
+stargazer(list(reggap09), type= "text")
+```
+
+
+```{r}
+load(file="input/data/dataproc/dat19.RData")
+#sjPlot::view_df(dat19)
+
+r19a<-lm(gap_perc ~ permer ,data=dat19)
+r19b<-lm(gap_perc ~ permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat19)
+
+r19c<-lm(gap_just ~ gap_perc ,data=dat19)
+r19d<-lm(gap_just ~ gap_perc + permer ,data=dat19)
+r19e<-lm(gap_just ~ gap_perc + permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat19)
+
+
+reggap19<- list(r19a,r19b,r19c,r19d,r19e)
+save(reggap19, file = "output/tables/reggap19.r")
+
+
+stargazer(list(reggap19), type= "text")
+```
+
+
+
+
 
 
 
@@ -988,7 +1054,7 @@ stargazer(list(reg1a,reg2a,reg3a,reg4a,reg1b,reg2b,reg3b,reg4b,reg1c,reg2c,reg3c
 
 
 
-# Evaluar interaccion del tiempo en la relacion entre brechas justas y percibidas. 
+# Evaluar interaccion del tiempo en la relacion entre brechas justas y percibidas.
 
 ```{r}
 load("input/data/dataproc/issp9919.RData")
@@ -1009,7 +1075,7 @@ stargazer(reg_year, type="text")
 
 ```
 
-##  
+##
 ```{r}
 int<-plot_model(reg_year, type="int")
 int
@@ -1088,7 +1154,7 @@ regdes193<-glm(redis ~  subrepresenta + desajuste , family = binomial, data=dat1
 stargazer(list(regdes99,regdes09,regdes192,regdes191,regdes193), type="text")
 ```
 
-## control por posicion politica. 
+## control por posicion politica.
 
 ```{r}
 
@@ -1116,91 +1182,9 @@ stargazer(list(reg1b,reg2b,reg3b,reg1c,reg2c,reg3c), type="text")
 
 ```
 
-# Modelos generales. 
+# Modelos generales.
 #1999
 r99a<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat99)
 reg2a<-glm(redis ~ lngap_perc + lngap_just + permer, family = binomial, data=dat99)
 reg3a<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media +  tecnico  , family = binomial, data=dat99)
 reg4a<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media + tecnico   + bajo + mediobajo + medio + medioalto + alto, family = binomial, data=dat99)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Explicando Brechas salariales 
--> de referencia se tomaron las catogorias educacion basica e ingresos bajos. 
-
-
-```{r}
-load("input/data/dataproc/dat99.RData")
-#sjPlot::view_df(dat99)
-
-r99a<-lm(gap_perc ~ permer ,data=dat99)
-r99b<-lm(gap_perc ~ permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat99)
-
-r99c<-lm(gap_just ~ gap_perc ,data=dat99)
-r99d<-lm(gap_just ~ gap_perc + permer ,data=dat99)
-r99e<-lm(gap_just ~ gap_perc + permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat99)
-
-reggap99<- list(r99a,r99b,r99c,r99d,r99e)
-save(reggap99, file = "output/tables/reggap99.r")
-
-sink("output/tables/table1.txt")
-stargazer(list(reggap99), type= "text")
-sink()
-
-
-```
-
-
-
-```{r}
-load(file="input/data/dataproc/dat09.RData")
-
-#sjPlot::view_df(dat09)
-
-r09a<-lm(gap_perc ~ permer ,data=dat09)
-r09b<-lm(gap_perc ~ permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat09)
-
-r09c<-lm(gap_just ~ gap_perc ,data=dat09)
-r09d<-lm(gap_just ~ gap_perc + permer ,data=dat09)
-r09e<-lm(gap_just ~ gap_perc + permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat09)
-
-reggap09<- list(r09a,r09b,r09c,r09d,r09e)
-save(reggap09, file = "output/tables/reggap09.r")
-
-
-stargazer(list(reggap09), type= "text")
-```
-
-
-```{r}
-load(file="input/data/dataproc/dat19.RData")
-#sjPlot::view_df(dat19)
-
-r19a<-lm(gap_perc ~ permer ,data=dat19)
-r19b<-lm(gap_perc ~ permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat19)
-
-r19c<-lm(gap_just ~ gap_perc ,data=dat19)
-r19d<-lm(gap_just ~ gap_perc + permer ,data=dat19)
-r19e<-lm(gap_just ~ gap_perc + permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat19)
-
-
-reggap19<- list(r19a,r19b,r19c,r19d,r19e)
-save(reggap19, file = "output/tables/reggap19.r")
-
-
-stargazer(list(reggap19), type= "text")
-```
-

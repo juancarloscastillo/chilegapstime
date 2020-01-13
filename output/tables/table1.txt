@@ -1,0 +1,39 @@
+
+<table style="text-align:center"><tr><td colspan="4" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"></td><td colspan="3"><em>Dependent variable:</em></td></tr>
+<tr><td></td><td colspan="3" style="border-bottom: 1px solid black"></td></tr>
+<tr><td style="text-align:left"></td><td>lngap_perc</td><td colspan="2">lngap_just</td></tr>
+<tr><td style="text-align:left"></td><td>(1)</td><td>(2)</td><td>(3)</td></tr>
+<tr><td colspan="4" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">as.factor(educ_rec)2</td><td>0.298<sup>***</sup></td><td>0.031</td><td>-0.119</td></tr>
+<tr><td style="text-align:left"></td><td>(0.089)</td><td>(0.092)</td><td>(0.080)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">as.factor(educ_rec)3</td><td>0.491<sup>***</sup></td><td>0.048</td><td>-0.137</td></tr>
+<tr><td style="text-align:left"></td><td>(0.136)</td><td>(0.137)</td><td>(0.118)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">as.factor(educ_rec)4</td><td>0.430<sup>**</sup></td><td>-0.037</td><td>-0.129</td></tr>
+<tr><td style="text-align:left"></td><td>(0.175)</td><td>(0.180)</td><td>(0.152)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">as.factor(Quint)2</td><td>0.358<sup>***</sup></td><td>0.159</td><td>-0.131</td></tr>
+<tr><td style="text-align:left"></td><td>(0.134)</td><td>(0.140)</td><td>(0.121)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">as.factor(Quint)3</td><td>0.415<sup>***</sup></td><td>0.352<sup>**</sup></td><td>-0.007</td></tr>
+<tr><td style="text-align:left"></td><td>(0.134)</td><td>(0.139)</td><td>(0.121)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">as.factor(Quint)4</td><td>0.429<sup>***</sup></td><td>0.437<sup>***</sup></td><td>0.092</td></tr>
+<tr><td style="text-align:left"></td><td>(0.132)</td><td>(0.137)</td><td>(0.120)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">as.factor(Quint)5</td><td>0.648<sup>***</sup></td><td>0.548<sup>***</sup></td><td>0.005</td></tr>
+<tr><td style="text-align:left"></td><td>(0.140)</td><td>(0.144)</td><td>(0.127)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">lngap_perc</td><td></td><td></td><td>0.510<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td>(0.032)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Constant</td><td>2.901<sup>***</sup></td><td>2.047<sup>***</sup></td><td>0.696<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td>(0.106)</td><td>(0.111)</td><td>(0.134)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td colspan="4" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Observations</td><td>788</td><td>751</td><td>690</td></tr>
+<tr><td style="text-align:left">R<sup>2</sup></td><td>0.079</td><td>0.031</td><td>0.288</td></tr>
+<tr><td style="text-align:left">Adjusted R<sup>2</sup></td><td>0.071</td><td>0.021</td><td>0.280</td></tr>
+<tr><td style="text-align:left">Residual Std. Error</td><td>1.078 (df = 780)</td><td>1.087 (df = 743)</td><td>0.889 (df = 681)</td></tr>
+<tr><td style="text-align:left">F Statistic</td><td>9.603<sup>***</sup> (df = 7; 780)</td><td>3.341<sup>***</sup> (df = 7; 743)</td><td>34.473<sup>***</sup> (df = 8; 681)</td></tr>
+<tr><td colspan="4" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"><em>Note:</em></td><td colspan="3" style="text-align:right"><sup>*</sup>p<0.1; <sup>**</sup>p<0.05; <sup>***</sup>p<0.01</td></tr>
+</table>

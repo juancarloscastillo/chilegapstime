@@ -126,7 +126,7 @@ Para analizar la distribución de los recursos de manera relativa evaluaremos la
 **Grafico 3:  Comparacion de las brechas salariales obrero-gerente, percibida y  justa, entre 1999 y 2019**
 
 ![](output/images/Brechas.png)
-bi
+
 **XX revisar gráfico, no calzan exactamente las brechas con los gráficos previos**
 
 
@@ -158,6 +158,13 @@ Dado que los grupos de menor estatus son los que perciben menor desigualdad, es 
 En esta última parte del análisis se presentan una serie de modelos de regresión tanto de la brecha percibida como de la brecha justa, así como sus variaciones por año.
 
 [XX esto requiere revisar recodificación de variables, sobre todo educación!!]
+
+Comezando con el año 99,
+
+```{r echo=FALSE}
+source('output/tables/table99.txt', echo = T, prompt.echo = "", spaced = F)
+
+```
 
 
 # A modo de conclusión
