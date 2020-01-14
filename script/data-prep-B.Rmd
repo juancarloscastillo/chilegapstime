@@ -194,6 +194,11 @@ freq(to_label(dat99$redis))
 ```
 ### e - estatus subjetivo
 
+dat99$v46 <- car::recode(dat99$v46,"c(97,98,99)=NA",as.numeric = TRUE)
+dat99$v46 <- sjmisc::rec(dat99$v46,rec="rev") # La escala estaba invertida
+dat99 <- cl99 %>% rename(ess=v46)
+
+
 ### Save 99 data
 
 
@@ -214,6 +219,7 @@ dat09 <- cl09 %>% dplyr::select(v5,
                          v33, # redistribucion
                          cl_degr, #Educacion
                          cl_inc, #ingreso
+                         v44, #estatus subjetivo
                          v10) # meritocracia
 
 #--- missing meritocracia -------------------------------------------------#
@@ -239,8 +245,8 @@ dat09$v33[dat09$v33==8]<-NA
 dat09$v33[dat09$v33==9]<-NA
 
 dat09$v33 <- sjmisc::rec(dat09$v33,rec="rev")
-# Estatus subj
-
+# Estatus subj 
+dat09$v44 <- car::recode(dat09$v44,"c(97,98,99)=NA",as.numeric = TRUE)
 
 # Rename variables
 
@@ -253,6 +259,7 @@ dat09 <- dplyr::rename(dat09,
                 permer=v10,
                 redis= v33,
                 educ_rec = cl_degr,
+                ess=v44,
                 income = cl_inc)
 
 
@@ -351,7 +358,7 @@ dat19 <- cl19 %>% dplyr::select(m2_p2_presidente,m2_p2_obrero,  # Salario percib
                          m2_p13a, #Estatus subjetivo
                          ds_p4, # Educacion
                          ds_p39, #ingreso
-                           m2_p1_5) # meritocracia
+                         m2_p1_5) # meritocracia
 #--- missing meritocracia -------------------------------------------------#
 # Percepcion
 
@@ -373,6 +380,10 @@ dat19$m2_p4_2[dat19$m2_p4_2==8]<-NA
 dat19$m2_p4_2[dat19$m2_p4_2==9]<-NA
 dat19$m2_p4_2  <-sjmisc::rec(dat19$m2_p4_2 ,rec="rev")# invertir sentido escala
 
+# Estatus subjetivo
+
+dat19$m2_p13a <- car::recode(dat19$m2_p13a ,"c(88,99)=NA",as.numeric = TRUE)
+
 
 # Rename variables
 dat19 <- dplyr::rename(dat19,
@@ -380,11 +391,9 @@ dat19 <- dplyr::rename(dat19,
                 salperobr=m2_p2_obrero,
                 saljusger=m2_p3_presidente,
                 saljusobr=m2_p3_obrero,
-
+                ess=m2_p13a,    
                 permerit=m2_p1_5 ,
-
                 redis = m2_p4_2,
-
                 income = ds_p39,
                 educ_rec=ds_p4)
 #--- missing brechas -------------------------------------------------#
