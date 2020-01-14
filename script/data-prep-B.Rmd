@@ -10,6 +10,7 @@ editor_options:
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(warning = FALSE,message = FALSE, cache = TRUE)
+knitr::opts_knit$set(root.dir = "../")
 options(scipen=999)
 rm(list=ls())
 ```
@@ -44,7 +45,7 @@ e- estatus subjetivo
 
 
 ```{r }
-load("../input/data/intermediate/cl99.RData") # cl99
+load("input/data/intermediate/cl99.RData") # cl99
 ```
 
 
@@ -121,12 +122,8 @@ frq(as.factor(cl99$degree))
 # dat99$educ_rec[dat99$educ_rec== 3010] <- 3
 # dat99$educ_rec[dat99$educ_rec== 3007] <- 4
 
-<<<<<<< HEAD
+
 edcl99 <- cl99 %>% select(degree) %>% mutate(educ_rec=rec(degree,rec = "1:4=1; 5=2 ; 6=3 ; 7=4"))
-=======
-cl99 <- cl99 %>% select(degree) %>% mutate(educ_rec=rec(degree,rec = "1:3=1; 4:5=2 ; 6=3 ; 7=4"))
-freq(cl99$educ_rec)
->>>>>>> master
 
 names(dat99)
 
@@ -211,7 +208,7 @@ freq(to_label(dat99$redis))
 
 ### Save 99 data
 ```{r}
-save(dat99,file = "../input/data/processed/dat99.RData")
+save(dat99,file = "input/data/processed/dat99.RData")
 ```
 
 
@@ -220,7 +217,7 @@ save(dat99,file = "../input/data/processed/dat99.RData")
 
 ### Load data 2009
 ```{r }
-load("../input/data/intermediate/cl09.RData") # cl09
+load("input/data/intermediate/cl09.RData") # cl09
 ```
 
 ### a- salaries perceived & just worker & manager 2009
@@ -267,7 +264,7 @@ stargazer(dat09, type="text")
 
 # Find vars
 
-#sjPlot::view_df(cl09, show.frq = T)
+##sjPlot::view_df(cl09, show.frq = T)
 
 find_var(cl09,"degr",search = "all") # cl_degr:
 frq(as.factor(cl09$cl_degr))
@@ -374,7 +371,7 @@ freq(dat09$redis_dummy)
 
 
 ```{r}
-save(dat09,file = "../input/data/processed/dat09.RData")
+save(dat09,file = "input/data/processed/dat09.RData")
 ```
 
 ## Year 2019
@@ -382,7 +379,7 @@ save(dat09,file = "../input/data/processed/dat09.RData")
 ### Load data 2019
 
 ```{r }
-load("../input/data/intermediate/cl19.RData") # cl19
+load("input/data/intermediate/cl19.RData") # cl19
 ```
 
 ### a- salaries perceived & just worker & manager 2019
@@ -398,8 +395,8 @@ find_var(cl19,"presidente",search = "all") # m2_p2_presidente: perceived chairma
 
 dat19 <- cl19 %>% select(m2_p2_presidente,m2_p2_obrero,m2_p3_obrero,m2_p3_presidente) %>% rename(salperger=m2_p2_presidente,
                salperobr=m2_p2_obrero,
-               saljusger=m2_p3_obrero,
-               saljusobr=m2_p3_presidente)
+               saljusger=m2_p3_presidente,
+               saljusobr=m2_p3_obrero)
 
 # Recodes
 
@@ -421,6 +418,13 @@ dat19$lngap_perc <-  as.numeric(log(dat19$gap_perc))                 # diferenci
 dat19$gap_just   <-  as.numeric(dat19$saljusger/dat19$saljusobr) # diferencia total
 dat19$lngap_just <-  as.numeric(log(dat19$gap_just))                # diferencia log
 dim(na.omit(dat19))
+
+hist(dat19$saljusger)
+hist(dat19$saljusobr)
+hist(dat19$gap_just)
+hist(dat19$gap_perc)
+
+
 ```
 
 ### b - education 2019
@@ -529,7 +533,7 @@ freq(to_label(dat99$redis))
 
 ### Save 19 data
 ```{r}
-save(dat19,file = "../input/data/processed/dat19.RData")
+save(dat19,file = "input/data/processed/dat19.RData")
 ```
 
 
@@ -538,9 +542,9 @@ save(dat19,file = "../input/data/processed/dat19.RData")
 
 ##Casen 2000
 ```{r}
-load(file="../input/data/origin data/datacasen/casen2000.RData")
+load(file="input/data/original/datacasen/casen2000.RData")
 
-#sjPlot::view_df(select(cs2000, "o8"), show.values = T, show.labels = T, max.len = 1000)
+##sjPlot::view_df(select(cs2000, "o8"), show.values = T, show.labels = T, max.len = 1000)
                 #hacer codebook para o8
 
 #peones de...
@@ -555,6 +559,7 @@ casen_gerente2000 = cs2000 %>% dplyr::filter(o8==1210) #gerente empresa
 casen_gerente2000 = casen_gerente2000 %>% dplyr::filter(o10==1)
 casen_gerente2000 = casen_gerente2000 %>% dplyr::filter(o13=="E" )
 
+
 brecha_real2000<-(median(casen_gerente2000$yopraj))/(median(casen_obreros2000$yopraj))
 
 summary(casen_obreros2000$yopraj)
@@ -562,16 +567,16 @@ summary(casen_gerente2000$yopraj)
 summary(brecha_real2000)
 table(casen_gerente2000$o13)
 
-sjPlot::view_df(casen_gerente2000, show.frq = T, max.len = 100000)#hacer codebook
+#sjPlot::view_df(casen_gerente2000, show.frq = T, max.len = 100000)#hacer codebook
 ```
 ##Casen 2009
 
 ```{r}
-load(file="../input/data/origin data/datacasen/casen2009.RData")
+load(file="input/data/original/datacasen/casen2009.RData")
 ```
-#
+
 ```{r}
-#sjPlot::view_df(select(cs2009, "c_o12"), show.values = T, show.labels = T, max.len = 1000)
+##sjPlot::view_df(select(cs2009, "c_o12"), show.values = T, show.labels = T, max.len = 1000)
 
 #ocupacion:c_o12
 #ingreso: yopraj
@@ -588,39 +593,24 @@ casen_gerente2009 = casen_gerente2009 %>% dplyr::filter(o14=="F")    #gran empre
 casen_gerente2009 = casen_gerente2009 %>% dplyr::filter(o23==1)      # filtro por ser patron en la empresa.
 casen_gerente2009<-na.omit(casen_gerente2009)
 table(casen_gerente2009$o14)
-sjPlot::view_df(casen_gerente2009, show.frq = T, max.len = 1000)
+#sjPlot::view_df(casen_gerente2009, show.frq = T, max.len = 1000)
 
 brecha_real2009<-(median(casen_gerente2009$yopraj))/(median(casen_obreros2009$yopraj))
 
 summary(casen_obreros2009$yopraj)
 summary(casen_gerente2009$yopraj)
 brecha_real2009
-sjPlot::view_df(casen_gerente2009, show.frq = T, max.len = 300) # hacer codebook
+#sjPlot::view_df(casen_gerente2009, show.frq = T, max.len = 300) # hacer codebook
 ```
 
-9200
-9210
-9211
-9212
-9213
-9300
-9310
-9311
-9312
-9313
-9320
-9321
-9322
-9330
-
 ```{r}
-load(file="../input/data/origin data/datacasen/casen2017.RData")
+load(file="input/data/original/datacasen/casen2017.RData")
 ```
 
 ## Casen 2017
 ```{r}
-#codecasen17<-sjPlot::view_df(cs2017)#hacer codebook
-#sjPlot::view_df(cs2017, show.values = T, show.labels = T, max.len = 1000)
+#codecasen17<-#sjPlot::view_df(cs2017)#hacer codebook
+##sjPlot::view_df(cs2017, show.values = T, show.labels = T, max.len = 1000)
                 #hacer codebook para o8
 
 #peones de...
@@ -642,7 +632,7 @@ casen_gerente2017 = casen_gerente2017 %>% dplyr::filter(o15 == 1) # empleador
 # yrut # retiro de utilidades
 #y0701 #independiente principal
 #table(casen_gerente2017$o15)
-# sjPlot::view_df(casen_gerente2017, show.frq = T, max.len = 1000)
+# #sjPlot::view_df(casen_gerente2017, show.frq = T, max.len = 1000)
 
 brecha_real2017<-(median(casen_gerente2017$y0701,na.rm = T))/(median(casen_obreros2017$y0101,na.rm = T))
 
@@ -661,7 +651,7 @@ brecha_salarial<- rbind(psych::describe(brecha_real2000),
                psych::describe(brecha_real2009),
                psych::describe(brecha_real2017))
 
-save(brecha_salarial, file = "../input/data/dataproc/dataproccasen/brecha.Rdata")
+save(brecha_salarial, file = "input/data/processed/dataproccasen/brecha.Rdata")
 ```
 
 
@@ -670,7 +660,7 @@ salario_gerente<- rbind(psych::describe(casen_gerente2000$yopraj),
                psych::describe(casen_gerente2009$yopraj),
                psych::describe(casen_gerente2017$y0701))
 
-save(salario_gerente, file = "../input/data/dataproc/dataproccasen/salario_gerente.Rdata")
+save(salario_gerente, file = "input/data/processed/dataproccasen/salario_gerente.Rdata")
 ```
 
 
@@ -679,12 +669,6 @@ salario_obrero<- rbind(psych::describe(casen_obreros2000$yopraj),
                psych::describe(casen_obreros2009$yopraj),
                psych::describe(casen_obreros2017$y0101))
 
-save(salario_obrero, file = "../input/data/dataproc/dataproccasen/salario_obrero.Rdata")
+save(salario_obrero, file = "input/data/processed/dataproccasen/salario_obrero.Rdata")
 ```
 
-
-```{r}
-hist(dat99$redis)
-hist(dat09$saljusger)
-hist(dat19$saljusger)
-```
