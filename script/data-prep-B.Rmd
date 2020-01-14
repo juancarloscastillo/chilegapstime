@@ -206,16 +206,19 @@ freq(to_label(dat99$redis))
 ```
 ### e - estatus subjetivo
 
-dat99$v46 <- car::recode(dat99$v46,"c(97,98,99)=NA",as.numeric = TRUE)
-dat99$v46 <- sjmisc::rec(dat99$v46,rec="rev") # La escala estaba invertida
-dat99 <- cl99 %>% rename(ess=v46)
+```{r}
+table(cl99$v46)
+cl99$v46 <- car::recode(cl99$v46,"c(97,98,99)=NA",as.numeric = TRUE)
+cl99$v46 <- sjmisc::rec(cl99$v46,rec="rev")
+freq(cl99$v46) # OK esatus subjetivo 1999
+dat99$ess <- cl99$v46 # save estatus subjetivo en dat99
+```
 
 
 ### Save 99 data
 ```{r}
 save(dat99,file = "input/data/processed/dat99.RData")
 ```
-
 
 
 ## Year 2009
@@ -371,6 +374,17 @@ dat09$redis_dummy<-ifelse(dat09$redis>3,1,0)
 dat09$redis_dummy <-set_labels(dat09$redis_dummy,labels= c("En desacuerdo"=0, "De acuerdo"=1))
 freq(dat09$redis_dummy)
 ```
+
+### e - estatus subjetivo
+
+```{r}
+table(cl09$v44)
+cl09$v44 <- car::recode(cl09$v44,"c(98,99)=NA",as.numeric = TRUE)
+freq(cl09$v44) # OK esatus subjetivo 2009
+dat09$ess <- cl09$v44 # save estatus subjetivo en dat09
+freq(dat09$ess)
+```
+
 
 ### Save 09 data
 
@@ -534,6 +548,16 @@ dat19$redis_dummy <-set_labels(dat19$redis_dummy,labels= c("En desacuerdo"=0, "D
 freq(dat99$redis_dummy)
 
 freq(to_label(dat99$redis))
+```
+
+### e - estatus subjetivo
+
+```{r}
+table(cl19$m2_p13a)
+cl19$m2_p13a <- car::recode(cl19$m2_p13a,"c(88,99)=NA",as.numeric = TRUE)
+freq(cl19$m2_p13a) # OK esatus subjetivo 2009
+dat19$ess <- cl19$m2_p13a # save estatus subjetivo en dat09
+freq(dat19$ess)
 ```
 
 ### Save 19 data
