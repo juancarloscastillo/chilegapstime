@@ -10,6 +10,7 @@ editor_options:
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(warning = FALSE,message = FALSE, cache = TRUE)
+knitr::opts_knit$set(root.dir = "../")
 options(scipen=999)
 rm(list=ls())
 ```
@@ -44,7 +45,7 @@ e- estatus subjetivo
 
 
 ```{r }
-load("../input/data/intermediate/cl99.RData") # cl99
+load("input/data/intermediate/cl99.RData") # cl99
 ```
 
 
@@ -121,12 +122,9 @@ frq(as.factor(cl99$degree))
 # dat99$educ_rec[dat99$educ_rec== 3010] <- 3
 # dat99$educ_rec[dat99$educ_rec== 3007] <- 4
 
-<<<<<<< HEAD
 edcl99 <- cl99 %>% select(degree) %>% mutate(educ_rec=rec(degree,rec = "1:4=1; 5=2 ; 6=3 ; 7=4"))
-=======
-cl99 <- cl99 %>% select(degree) %>% mutate(educ_rec=rec(degree,rec = "1:3=1; 4:5=2 ; 6=3 ; 7=4"))
-freq(cl99$educ_rec)
->>>>>>> master
+
+freq(edcl99$educ_rec)
 
 names(dat99)
 
@@ -200,7 +198,7 @@ freq(dat99$redis)
 dat99$redis <-set_labels(dat99$redis,labels= c("Muy en desacuerdo"=1, "En descacuerdo"=2,"Ni acuerdo ni desacuerdo"=3, "De acuerdo"=4, "Muy de acuerdo"=5))
 get_labels(dat99$redis, values="as.name")
 
-#dummy redis 
+#dummy redis
 dat99$redis_dummy<-ifelse(dat99$redis>3,1,0)
 dat99$redis_dummy <-set_labels(dat99$redis_dummy,labels= c("En desacuerdo"=0, "De acuerdo"=1))
 freq(dat99$redis_dummy)
@@ -211,7 +209,7 @@ freq(to_label(dat99$redis))
 
 ### Save 99 data
 ```{r}
-save(dat99,file = "../input/data/processed/dat99.RData")
+save(dat99,file = "input/data/processed/dat99.RData")
 ```
 
 
@@ -220,7 +218,7 @@ save(dat99,file = "../input/data/processed/dat99.RData")
 
 ### Load data 2009
 ```{r }
-load("../input/data/intermediate/cl09.RData") # cl09
+load("input/data/intermediate/cl09.RData") # cl09
 ```
 
 ### a- salaries perceived & just worker & manager 2009
@@ -317,7 +315,7 @@ freq(cl09$cl_inc) # deciles family
 
 # take income, impute middle range, then divide by persons in household, then deciles
 
-cl09$income_c= rec(cl09$cl_inc,rec =   
+cl09$income_c= rec(cl09$cl_inc,rec =
       "20000=45000;
       45000=105500;
       66000=135500;
@@ -340,7 +338,7 @@ freq(cl99$income_c) # ok
 find_var(cl09,"household",search = "all") # persons in household
 freq(cl09$hompop)
 
-dat09$ingreso_pc= cl09$income_c/cl09$hompop       
+dat09$ingreso_pc= cl09$income_c/cl09$hompop
 
 # Generar quintiles de ingreso
 
@@ -364,7 +362,7 @@ freq(dat09$redis)
 dat09$redis <-set_labels(dat09$redis,labels= c("Muy en desacuerdo"=1, "En descacuerdo"=2,"Ni acuerdo ni desacuerdo"=3, "De acuerdo"=4, "Muy de acuerdo"=5))
 get_labels(dat09$redis, values="as.name")
 
-#dummy redis 
+#dummy redis
 dat09$redis_dummy<-ifelse(dat09$redis>3,1,0)
 dat09$redis_dummy <-set_labels(dat09$redis_dummy,labels= c("En desacuerdo"=0, "De acuerdo"=1))
 freq(dat09$redis_dummy)
@@ -374,7 +372,7 @@ freq(dat09$redis_dummy)
 
 
 ```{r}
-save(dat09,file = "../input/data/processed/dat09.RData")
+save(dat09,file = "input/data/processed/dat09.RData")
 ```
 
 ## Year 2019
@@ -382,7 +380,7 @@ save(dat09,file = "../input/data/processed/dat09.RData")
 ### Load data 2019
 
 ```{r }
-load("../input/data/intermediate/cl19.RData") # cl19
+load("input/data/intermediate/cl19.RData") # cl19
 ```
 
 ### a- salaries perceived & just worker & manager 2019
@@ -392,7 +390,7 @@ load("../input/data/intermediate/cl19.RData") # cl19
 # Find vars
 
 find_var(cl19,"obrero",search = "all") # m2_p2_obrero: perceived worker, m2_p3_obrero: just worker
-find_var(cl19,"presidente",search = "all") # m2_p2_presidente: perceived chairman, m2_p3_presidente: just chairman 
+find_var(cl19,"presidente",search = "all") # m2_p2_presidente: perceived chairman, m2_p3_presidente: just chairman
 
 # Create object with vars & rename
 
@@ -473,7 +471,7 @@ freq(cl19$ds_p39) # deciles family
 
 # take income, impute middle range, then divide by persons in household, then deciles
 
-cl19$income_c= rec(cl19$ds_p39,rec =   
+cl19$income_c= rec(cl19$ds_p39,rec =
       "1=45000;
       2=105500;
       3=135500;
@@ -496,7 +494,7 @@ freq(cl19$income_c) # ok
 find_var(cl19,"viven",search = "all") # ds_p34
 freq(cl19$ds_p34)
 
-dat19$ingreso_pc= cl19$income_c/cl19$ds_p34       
+dat19$ingreso_pc= cl19$income_c/cl19$ds_p34
 
 # Generar quintiles de ingreso
 
@@ -509,7 +507,7 @@ freq( dat19$Quint)
 ### d - redistribution 2019
 
 ```{r}
-find_var(cl19,"responsabilidad",search = "all") # m2_p4_2 
+find_var(cl19,"responsabilidad",search = "all") # m2_p4_2
 freq(cl19$m2_p4_2 )
 get_labels(cl19$m2_p4_2 ,values = "as.name")
 
@@ -519,7 +517,7 @@ freq(dat99$redis)
 dat19$redis <-set_labels(dat19$redis,labels= c("Muy en desacuerdo"=1, "En descacuerdo"=2,"Ni acuerdo ni desacuerdo"=3, "De acuerdo"=4, "Muy de acuerdo"=5))
 get_labels(dat19$redis, values="as.name")
 
-#dummy redis 
+#dummy redis
 dat19$redis_dummy<-ifelse(dat19$redis>3,1,0)
 dat19$redis_dummy <-set_labels(dat19$redis_dummy,labels= c("En desacuerdo"=0, "De acuerdo"=1))
 freq(dat99$redis_dummy)
@@ -529,7 +527,7 @@ freq(to_label(dat99$redis))
 
 ### Save 19 data
 ```{r}
-save(dat19,file = "../input/data/processed/dat19.RData")
+save(dat19,file = "input/data/processed/dat19.RData")
 ```
 
 
@@ -538,7 +536,7 @@ save(dat19,file = "../input/data/processed/dat19.RData")
 
 ##Casen 2000
 ```{r}
-load(file="../input/data/origin data/datacasen/casen2000.RData")
+load(file="input/data/original/datacasen/casen2000.RData")
 
 #sjPlot::view_df(select(cs2000, "o8"), show.values = T, show.labels = T, max.len = 1000)
                 #hacer codebook para o8
@@ -567,7 +565,7 @@ sjPlot::view_df(casen_gerente2000, show.frq = T, max.len = 100000)#hacer codeboo
 ##Casen 2009
 
 ```{r}
-load(file="../input/data/origin data/datacasen/casen2009.RData")
+load(file="input/data/original/datacasen/casen2009.RData")
 ```
 #
 ```{r}
@@ -614,7 +612,7 @@ sjPlot::view_df(casen_gerente2009, show.frq = T, max.len = 300) # hacer codebook
 9330
 
 ```{r}
-load(file="../input/data/origin data/datacasen/casen2017.RData")
+load(file="input/data/original/datacasen/casen2017.RData")
 ```
 
 ## Casen 2017
@@ -661,7 +659,7 @@ brecha_salarial<- rbind(psych::describe(brecha_real2000),
                psych::describe(brecha_real2009),
                psych::describe(brecha_real2017))
 
-save(brecha_salarial, file = "../input/data/dataproc/dataproccasen/brecha.Rdata")
+save(brecha_salarial, file = "input/data/processed/dataproccasen/brecha.Rdata")
 ```
 
 
@@ -670,7 +668,7 @@ salario_gerente<- rbind(psych::describe(casen_gerente2000$yopraj),
                psych::describe(casen_gerente2009$yopraj),
                psych::describe(casen_gerente2017$y0701))
 
-save(salario_gerente, file = "../input/data/dataproc/dataproccasen/salario_gerente.Rdata")
+save(salario_gerente, file = "input/data/processed/dataproccasen/salario_gerente.Rdata")
 ```
 
 
@@ -679,7 +677,7 @@ salario_obrero<- rbind(psych::describe(casen_obreros2000$yopraj),
                psych::describe(casen_obreros2009$yopraj),
                psych::describe(casen_obreros2017$y0101))
 
-save(salario_obrero, file = "../input/data/dataproc/dataproccasen/salario_obrero.Rdata")
+save(salario_obrero, file = "input/data/processed/dataproccasen/salario_obrero.Rdata")
 ```
 
 

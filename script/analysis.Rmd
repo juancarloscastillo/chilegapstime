@@ -29,8 +29,6 @@ rm(list=ls())
   library(ggplot2)
   library(knitr)
   library(kableExtra)
-  library(GPArotation)
-  library(lavaan)
   library(stargazer)
 ```
 
@@ -913,10 +911,12 @@ table_ed_redistribution
  ggsave(table_ed_redistribution,filename = "output/images/rediseduc.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
 ```
 
+##################################
+# Modelos de  Brechas salariales #
+##################################
 
-# Mdelos de  Brechas salariales
--> de referencia se tomaron las catogorias educacion basica e ingresos bajos.
 
+*1999*
 
 ```{r}
 load("input/data/processed/dat99.RData")
@@ -928,53 +928,64 @@ r99a<-lm(lngap_perc ~ + as.factor(educ_rec) + as.factor(Quint), data=dat99)
 r99b<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint), data=dat99)
 r99c<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + lngap_perc, data=dat99)
 
+sink("output/tables/table99.html")
+stargazer(list(r99a,r99b,r99c), type= "html",
+          covariate.labels = c("Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria",
+                               "Quintil 2", "Quintil 3","Quintil 2","Quintil 5",
+                               "Brecha Percibida"),
+          dep.var.labels = c("Brecha Percibida", "Brecha Justa"),
+          dep.var.caption  = "Variables dependientes")
+sink()
+
 sink("output/tables/table99.txt")
 stargazer(list(r99a,r99b,r99c), type= "html")
 sink()
 
-
-
 ```
 
 
+*2009*
 
 ```{r}
-load(file="input/data/dataproc/dat09.RData")
+load("input/data/processed/dat09.RData")
 
-#sjPlot::view_df(dat09)
+names(dat09)
 
-r09a<-lm(gap_perc ~ permer ,data=dat09)
-r09b<-lm(gap_perc ~ permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat09)
+r09a<-lm(lngap_perc ~ + as.factor(educ_rec) + as.factor(Quint), data=dat09)
+r09b<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint), data=dat09)
+r09c<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + lngap_perc, data=dat09)
 
-r09c<-lm(gap_just ~ gap_perc ,data=dat09)
-r09d<-lm(gap_just ~ gap_perc + permer ,data=dat09)
-r09e<-lm(gap_just ~ gap_perc + permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat09)
+sink("output/tables/table09.html")
+stargazer(list(r09a,r09b,r09c), type= "html",
+          covariate.labels = c("Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria",
+                               "Quintil 2", "Quintil 3","Quintil 2","Quintil 5",
+                               "Brecha Percibida"),
+          dep.var.labels = c("Brecha Percibida", "Brecha Justa"),
+          dep.var.caption  = "Variables dependientes")
+sink()
 
-reggap09<- list(r09a,r09b,r09c,r09d,r09e)
-save(reggap09, file = "output/tables/reggap09.r")
-
-
-stargazer(list(reggap09), type= "text")
 ```
 
+*2019*
 
 ```{r}
-load(file="input/data/dataproc/dat19.RData")
-#sjPlot::view_df(dat19)
+load("input/data/processed/dat19.RData")
 
-r19a<-lm(gap_perc ~ permer ,data=dat19)
-r19b<-lm(gap_perc ~ permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat19)
+names(dat19)
 
-r19c<-lm(gap_just ~ gap_perc ,data=dat19)
-r19d<-lm(gap_just ~ gap_perc + permer ,data=dat19)
-r19e<-lm(gap_just ~ gap_perc + permer  + media + tecnico + universitaria + mediobajo + medio + medioalto + alto + muyalto , data=dat19)
+r19a<-lm(lngap_perc ~ + as.factor(educ_rec) + as.factor(Quint), data=dat19)
+r19b<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint), data=dat19)
+r19c<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + lngap_perc, data=dat19)
 
+sink("output/tables/table19.html")
+stargazer(list(r19a,r19b,r19c), type= "html",
+          covariate.labels = c("Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria",
+                               "Quintil 2", "Quintil 3","Quintil 2","Quintil 5",
+                               "Brecha Percibida"),
+          dep.var.labels = c("Brecha Percibida", "Brecha Justa"),
+          dep.var.caption  = "Variables dependientes")
+sink()
 
-reggap19<- list(r19a,r19b,r19c,r19d,r19e)
-save(reggap19, file = "output/tables/reggap19.r")
-
-
-stargazer(list(reggap19), type= "text")
 ```
 
 
@@ -983,7 +994,9 @@ stargazer(list(reggap19), type= "text")
 
 
 
-#regresion text
+
+
+# Modelos redistribución
 
 ```{r}
 #1999
