@@ -555,8 +555,8 @@ freq(to_label(dat99$redis))
 ```{r}
 table(cl19$m2_p13a)
 cl19$m2_p13a <- car::recode(cl19$m2_p13a,"c(88,99)=NA",as.numeric = TRUE)
-freq(cl19$m2_p13a) # OK esatus subjetivo 2009
-dat19$ess <- cl19$m2_p13a # save estatus subjetivo en dat09
+freq(cl19$m2_p13a) # OK esatus subjetivo 2019
+dat19$ess <- cl19$m2_p13a # save estatus subjetivo en dat19
 freq(dat19$ess)
 ```
 
