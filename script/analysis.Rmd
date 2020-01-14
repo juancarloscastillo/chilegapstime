@@ -32,210 +32,14 @@ rm(list=ls())
   library(stargazer)
 ```
 
-
-
-```{r load data}
-load(file = "input/data/dataproc/cl09.RData")
-load(file = "input/data/dataproc/cl99.RData")
-load(file = "input/data/dataproc/cl19.RData")
-```
-
-# Adjust data for perceived and just salaries
-
-## 1999
-
-### Select variables
-```{r salario percibido y justo 1999}
-salarios99 <- cl99 %>% select(v3,
-                              v21,v16,    # Salario percibio obrero y gerente
-                              v31,v26)# Salario justo    obrero y gerente
-dim(salarios99)
-
-summary(salarios99)
-
-# M2_P2_PRESIDENTE cuanto gana GERENTE
-# M2_P2_OBRERO cuanto gana OBRERO
-# M2_P3_PRESIDENTE cuanto deberia ganar GERENTE
-# M2_P3_OBRERO cuanto deberia ganar OBRERO
-
-```
-
-### Identify missings
-
-```{r}
-# table(salarios99$v21) #  99999999999
-# table(salarios99$V16) #  99999999998 99999999999
-# table(salarios99$V31) # 99999999998 99999999999
-# table(salarios99$V26) # 99999999998 99999999999
-
-names(salarios99)
-salarios99[2:4][salarios99[2:4] >= 99999999998] <- NA
-
-salarios99$v3 <- as_character(salarios99$v3)
-summary(salarios99)
-dim(na.omit(salarios99))
-
-colSums(is.na(salarios99))
-```
-
-### Renames
-
-```{r}
-salarios99 <- rename(salarios99,pais=v3,salperger=v16,salperobr=v21,saljusger=v26,saljusobr=v31)
-```
-
-### Outliers
-
-```{r remover outliers 1999, include=FALSE}
-table(salarios99$salperobr) # <22000000 120000000
-salarios99 %>% filter(salperobr <= 40000| salperobr >= 1000000) # 13 casos
-
-table(salarios99$salperger)
-salarios99 %>% filter(salperger <= 250000 | salperger >= 100000001) # 12 casos
-
-table(salarios99$saljusobr) # <30000000
-salarios99 %>% filter(saljusobr <= 40000) # 1 caso
-
-table(salarios99$saljusger)
-salarios99 %>% filter(saljusger <= 100000) # 5 casos
-
-# Quitar outliers *************************
-
-dim(na.omit(salarios99))
-
-salarios99 <- salarios99 %>%
-  mutate(salperobr=replace(salperobr, salperobr <= 40000 | salperobr>= 1000000, NA)) %>%
-  mutate(salperger=replace(salperger, salperger <= 250000 | salperger>= 100000001, NA)) %>%
-  mutate(saljusobr=replace(saljusobr, saljusobr <= 40000, NA)) %>%
-  mutate(saljusger=replace(saljusger, saljusger <= 100000, NA))
-
-```
-
-### Generate Gaps
-
-```{r gap salario 1999}
-#---Brecha salarial percibida
-salarios99$gap_perc   <-  as.numeric(salarios99$salperger/salarios99$salperobr) # diferencia total
-salarios99$lngap_perc <-  as.numeric(log(salarios99$gap_perc))                 # diferencia log
-
-#---Brecha salarial justa
-salarios99$gap_just   <-  as.numeric(salarios99$saljusger/salarios99$saljusobr) # diferencia total
-salarios99$lngap_just <-  as.numeric(log(salarios99$gap_just))                # diferencia log
-```
-
-## 2009
-
-### Select variables
-
-```{r salario percibido y justo 2009}
-
-# table(salarios09$V23) # cuanto gana GERENTE
-# table(salarios09$V25) # cuanto gana OBRERO
-# table(salarios09$V28) # cuando deberia ganar GERENTE
-# table(salarios09$V30) # cuanto deberia ganar OBRERO
-
-salarios09 <- cl09 %>% select(v5,
-                              v23,v25, # Salario percibido obrero y gerente
-                              v28,v30) # Salario justo    obrero y gerente
-
-
-summary(salarios09)
-
-salarios09$v5 <- as_character(salarios09$v5)
-
-```
-
-### Renames
-
-```{r}
-#--- Nombres sustantivos para analisis
-salarios09 <- rename(salarios09,pais=v5,salperger=v23,salperobr=v25,saljusger=v28,saljusobr=v30)
-```
-
-
-### Outliers & NAs
-
-```{r}
-salarios09 <- salarios09 %>%
-  mutate(salperobr=replace(salperobr, salperobr <= 40000 | salperobr>= 1000000, NA)) %>%
-  mutate(salperger=replace(salperger, salperger <= 250000 | salperger>= 100000001, NA)) %>%
-  mutate(saljusobr=replace(saljusobr, saljusobr <= 40000, NA)) %>%
-  mutate(saljusger=replace(saljusger, saljusger <= 100000, NA))
-
-summary(salarios09)
-
-dim(na.omit(salarios09))
-```
-
-### Gaps
-
-```{r gap salario 2009}
-#---Brecha salarial percibida
-salarios09$gap_perc   <-  as.numeric(salarios09$salperger/salarios09$salperobr) # diferencia total
-salarios09$lngap_perc <-  as.numeric(log(salarios09$gap_perc))                # diferencia log
-
-#---Brecha salarial justa
-salarios09$gap_just   <-  as.numeric(salarios09$saljusger/salarios09$saljusobr) # diferencia total
-salarios09$lngap_just <-  as.numeric(log(salarios09$gap_just))                # diferencia log
-```
-
-## 2019
-
-### Select variables
-
-```{r salario percibido y justo 2019}
-salarios19 <- cl19 %>% select(m2_p2_presidente,m2_p2_obrero,  # Salario percibio obrero y gerente
-                              m2_p3_presidente,m2_p3_obrero) # Salario justo    obrero y gerente
-
-summary(salarios19)
-
-# NAs already identified
-
-```
-
-### Renames
-
-```{r}
-#--- Nombres sustantivos para analisis
-salarios19 <- rename(salarios19,salperger=m2_p2_presidente,salperobr=m2_p2_obrero,
-                     saljusger=m2_p3_presidente,saljusobr=m2_p3_obrero)
-
-```
-
-
-### Outliers & NAs
-
-
-```{r remover outliers 2019, include=FALSE}
-salarios19 <- salarios19 %>%
-  mutate(salperobr=replace(salperobr, salperobr <= 40000 | salperobr>= 1000000, NA)) %>%
-  mutate(salperger=replace(salperger, salperger <= 250000 | salperger>= 100000001, NA)) %>%
-  mutate(saljusobr=replace(saljusobr, saljusobr <= 40000, NA)) %>%
-  mutate(saljusger=replace(saljusger, saljusger <= 100000, NA))
-
-summary(salarios19)
-```
-### Gaps
-
-```{r gap salario 2019}
-#---Brecha salarial percibida
-salarios19$gap_perc   <-  as.numeric(salarios19$salperger/salarios19$salperobr) # diferencia total
-salarios19$lngap_perc <-  as.numeric(log(salarios19$gap_perc))                  # diferencia log
-
-
-#---Brecha salarial justa
-salarios19$gap_just   <-  as.numeric(salarios19$saljusger/salarios19$saljusobr) # diferencia total
-salarios19$lngap_just <-  as.numeric(log(salarios19$gap_just))                # diferencia log
-```
-
 # Descriptive analysis
 
 ## Descriptive perception
 
 ```{r}
 load("input/data/processed/dat99.RData")
-load("input/data/dataproc/dat09.RData")
-load("input/data/dataproc/dat19.RData")
+load("input/data/processed/dat09.RData")
+load("input/data/processed/dat19.RData")
 ```
 
 ### Perception worker
@@ -300,12 +104,10 @@ salario_per
 ```
 
 
-
-
 ## Descriptive Justice
 ### worker real
 ```{r}
-load(file="input/data/dataproc/dataproccasen/salario_obrero.Rdata")
+load(file="input/data/processed/dataproccasen/salario_obrero.Rdata")
 rownames(salario_obrero)<-c("1999","2009","2019")
 
 
@@ -317,7 +119,7 @@ salario_obrero
 
 ### manager real
 ```{r}
-load(file="input/data/dataproc/dataproccasen/salario_gerente.Rdata")
+load(file="input/data/processed/dataproccasen/salario_gerente.Rdata")
 rownames(salario_gerente)<-c("1999","2009","2019")
 salario_gerente <- salario_gerente %>% select(n,mean,sd,median,trimmed,min,max)
 salario_gerente
@@ -459,7 +261,7 @@ table_gap_just
 
 
 ```{r}
-load(file = "input/data/dataproc/dataproccasen/brecha.Rdata")
+load(file = "input/data/processed/dataproccasen/brecha.Rdata")
 
 rownames(brecha_salarial) <- c("2000","2009","2017")
 
@@ -519,10 +321,10 @@ brechas
 # Brechas percibidas y justas segun nivel educativo
 
 ```{r}
-load(file = "input/data/dataproc/cl09.RData")
-load(file = "input/data/dataproc/cl99.RData")
-load(file = "input/data/dataproc/cl19.RData")
-load(file = "input/data/dataproc/issp9919.RData")
+load(file = "input/data/processed/dat99.RData")
+load(file = "input/data/processed/dat09.RData")
+load(file = "input/data/processed/dat19.RData")
+load(file = "input/data/processed/issp9919.RData")
 
 library("dplyr")
 library("corrplot")
@@ -530,24 +332,15 @@ library("ggplot2")
 
 ```
 
-```{r}
-ed_gap<- clw3 %>% select("Educacion"=educ_rec, "Brecha_Percibida"=gap_perc, "Brecha_Justa"=gap_just,"year") %>% as.data.frame()
-```
-
 
 ```{r}
-ed1_gap99 = ed_gap %>%  filter(Educacion == 1) %>% as.data.frame()
-ed1_gap99 = ed1_gap99 %>% filter(year == 1999) %>% as.data.frame()
+ed1_gap99 = dat99 %>%  filter(educ_rec == 1) %>% as.data.frame()
+ed1_gap09 = dat09 %>%  filter(educ_rec == 1) %>% as.data.frame()
+ed1_gap19 = dat19 %>%  filter(educ_rec == 1) %>% as.data.frame()
 
-ed1_gap09 = ed_gap %>%  filter(Educacion == 1) %>% as.data.frame()
-ed1_gap09 = ed1_gap09 %>% filter(year == 2009) %>% as.data.frame()
-
-ed1_gap19 = ed_gap %>%  filter(Educacion == 1) %>% as.data.frame()
-ed1_gap19 = ed1_gap19 %>% filter(year == 2019) %>% as.data.frame()
-
-table_ed1<- rbind(psych::describe(ed1_gap99$Brecha_Percibida),
-               psych::describe(ed1_gap09$Brecha_Percibida),
-               psych::describe(ed1_gap19$Brecha_Percibida))
+table_ed1<- rbind(psych::describe(ed1_gap99$gap_perc),
+               psych::describe(ed1_gap09$gap_perc),
+               psych::describe(ed1_gap19$gap_perc))
 
 rownames(table_ed1) <- c("1999","2009","2019")
 table_ed1 <- table_ed1 %>% select(n,mean,sd,median,trimmed,min,max)
@@ -559,18 +352,13 @@ table_ed1
 ```
 
 ```{r}
-ed2_gap99 = ed_gap %>%  filter(Educacion == 2) %>% as.data.frame()
-ed2_gap99 = ed2_gap99 %>% filter(year == 1999) %>% as.data.frame()
+ed2_gap99 = dat99 %>%  filter(educ_rec == 2) %>% as.data.frame()
+ed2_gap09 = dat09 %>%  filter(educ_rec == 2) %>% as.data.frame()
+ed2_gap19 = dat19 %>%  filter(educ_rec == 2) %>% as.data.frame()
 
-ed2_gap09 = ed_gap %>%  filter(Educacion == 2) %>% as.data.frame()
-ed2_gap09 = ed2_gap09 %>% filter(year == 2009) %>% as.data.frame()
-
-ed2_gap19 = ed_gap %>%  filter(Educacion == 2) %>% as.data.frame()
-ed2_gap19 = ed2_gap19 %>% filter(year == 2019) %>% as.data.frame()
-
-table_ed2<- rbind(psych::describe(ed2_gap99$Brecha_Percibida),
-               psych::describe(ed2_gap09$Brecha_Percibida),
-               psych::describe(ed2_gap19$Brecha_Percibida))
+table_ed2<- rbind(psych::describe(ed2_gap99$gap_perc),
+               psych::describe(ed2_gap09$gap_perc),
+               psych::describe(ed2_gap19$gap_perc))
 
 rownames(table_ed2) <- c("1999","2009","2019")
 table_ed2 <- table_ed2 %>% select(n,mean,sd,median,trimmed,min,max)
@@ -585,18 +373,14 @@ table_ed2
 ```
 
 ```{r}
-ed3_gap99 = ed_gap %>%  filter(Educacion == 3) %>% as.data.frame()
-ed3_gap99 = ed3_gap99 %>% filter(year == 1999) %>% as.data.frame()
+ed3_gap99 = dat99 %>%  filter(educ_rec == 3) %>% as.data.frame()
+ed3_gap09 = dat09 %>%  filter(educ_rec == 3) %>% as.data.frame()
+ed3_gap19 = dat19 %>%  filter(educ_rec == 3) %>% as.data.frame()
 
-ed3_gap09 = ed_gap %>%  filter(Educacion == 3) %>% as.data.frame()
-ed3_gap09 = ed3_gap09 %>% filter(year == 2009) %>% as.data.frame()
 
-ed3_gap19 = ed_gap %>%  filter(Educacion == 3) %>% as.data.frame()
-ed3_gap19 = ed3_gap19 %>% filter(year == 2019) %>% as.data.frame()
-
-table_ed3<- rbind(psych::describe(ed3_gap99$Brecha_Percibida),
-               psych::describe(ed3_gap09$Brecha_Percibida),
-               psych::describe(ed3_gap19$Brecha_Percibida))
+table_ed3<- rbind(psych::describe(ed3_gap99$gap_perc),
+               psych::describe(ed3_gap09$gap_perc),
+               psych::describe(ed3_gap19$gap_perc))
 
 rownames(table_ed3) <- c("1999","2009","2019")
 table_ed3 <- table_ed3 %>% select(n,mean,sd,median,trimmed,min,max)
@@ -612,18 +396,13 @@ table_ed3
 
 
 ```{r}
-ed4_gap99 = ed_gap %>%  filter(Educacion == 4) %>% as.data.frame()
-ed4_gap99 = ed4_gap99 %>% filter(year == 1999) %>% as.data.frame()
+ed4_gap99 = dat99 %>%  filter(educ_rec == 4) %>% as.data.frame()
+ed4_gap09 = dat09 %>%  filter(educ_rec == 4) %>% as.data.frame()
+ed4_gap19 = dat19 %>%  filter(educ_rec == 4) %>% as.data.frame()
 
-ed4_gap09 = ed_gap %>%  filter(Educacion == 4) %>% as.data.frame()
-ed4_gap09 = ed4_gap09 %>% filter(year == 2009) %>% as.data.frame()
-
-ed4_gap19 = ed_gap %>%  filter(Educacion == 4) %>% as.data.frame()
-ed4_gap19 = ed4_gap19 %>% filter(year == 2019) %>% as.data.frame()
-
-table_ed4<- rbind(psych::describe(ed4_gap99$Brecha_Percibida),
-               psych::describe(ed4_gap09$Brecha_Percibida),
-               psych::describe(ed4_gap19$Brecha_Percibida))
+table_ed4<- rbind(psych::describe(ed4_gap99$gap_perc),
+               psych::describe(ed4_gap09$gap_perc),
+               psych::describe(ed4_gap19$gap_perc))
 
 rownames(table_ed4) <- c("1999","2009","2019")
 table_ed4 <- table_ed4 %>% select(n,mean,sd,median,trimmed,min,max)
@@ -663,13 +442,13 @@ table_ed_gapper
 ```
 
 
-
+##Brecha justa segun nivel educativo
 
 
 ```{r}
-table_ed1_jus<- rbind(psych::describe(ed1_gap99$Brecha_Justa),
-               psych::describe(ed1_gap09$Brecha_Justa),
-               psych::describe(ed1_gap19$Brecha_Justa))
+table_ed1_jus<- rbind(psych::describe(ed1_gap99$gap_just),
+               psych::describe(ed1_gap09$gap_just),
+               psych::describe(ed1_gap19$gap_just))
 
 rownames(table_ed1_jus) <- c("1999","2009","2019")
 table_ed1_jus <- table_ed1_jus %>% select(n,mean,sd,median,trimmed,min,max)
@@ -682,9 +461,9 @@ table_ed1_jus
 ```
 
 ```{r}
-table_ed2_jus<- rbind(psych::describe(ed2_gap99$Brecha_Justa),
-               psych::describe(ed2_gap09$Brecha_Justa),
-               psych::describe(ed2_gap19$Brecha_Justa))
+table_ed2_jus<- rbind(psych::describe(ed2_gap99$gap_just),
+               psych::describe(ed2_gap09$gap_just),
+               psych::describe(ed2_gap19$gap_just))
 
 rownames(table_ed2_jus) <- c("1999","2009","2019")
 table_ed2_jus <- table_ed2_jus %>% select(n,mean,sd,median,trimmed,min,max)
@@ -700,9 +479,9 @@ table_ed2_jus
 
 ```{r}
 
-table_ed3_jus<- rbind(psych::describe(ed3_gap99$Brecha_Justa),
-               psych::describe(ed3_gap09$Brecha_Justa),
-               psych::describe(ed3_gap19$Brecha_Justa))
+table_ed3_jus<- rbind(psych::describe(ed3_gap99$gap_just),
+               psych::describe(ed3_gap09$gap_just),
+               psych::describe(ed3_gap19$gap_just))
 
 rownames(table_ed3_jus) <- c("1999","2009","2019")
 table_ed3_jus <- table_ed3_jus %>% select(n,mean,sd,median,trimmed,min,max)
@@ -718,9 +497,9 @@ table_ed3_jus
 
 
 ```{r}
-table_ed4_jus<- rbind(psych::describe(ed4_gap99$Brecha_Justa),
-               psych::describe(ed4_gap09$Brecha_Justa),
-               psych::describe(ed4_gap19$Brecha_Justa))
+table_ed4_jus<- rbind(psych::describe(ed4_gap99$gap_just),
+               psych::describe(ed4_gap09$gap_just),
+               psych::describe(ed4_gap19$gap_just))
 
 rownames(table_ed4_jus) <- c("1999","2009","2019")
 table_ed4_jus <- table_ed4_jus %>% select(n,mean,sd,median,trimmed,min,max)
@@ -735,7 +514,7 @@ table_ed4_jus
 
 
 
-# brecha justa segun nivel educativo
+### Grafico brecha justa segun nivel educativo
 ```{r}
 table_ed_gapjus<-rbind(table_ed1_jus,table_ed2_jus,table_ed3_jus,table_ed4_jus)
 
@@ -764,29 +543,9 @@ table_ed_gapjus
 
 
 ```{r}
-load(file = "input/data/dataproc/dat99.RData")
-load(file = "input/data/dataproc/dat09.RData")
-load(file = "input/data/dataproc/dat19.RData")
-```
-
-
-```{r}
-ed_redis<- clw3 %>% select("Educacion"=educ_rec, "Redistribution"=redis, year) %>% as.data.frame()
-ed_redis <-na.omit(ed_redis)
-
-
-ed1_redis99 = ed_redis %>%  filter(Educacion == 1) %>% as.data.frame()
-ed1_redis99 = ed1_redis99 %>% filter(year == 1999) %>% as.data.frame()
-
-ed1_redis09 = ed_redis %>%  filter(Educacion == 1) %>% as.data.frame()
-ed1_redis09 = ed1_redis09 %>% filter(year == 2009) %>% as.data.frame()
-
-ed1_redis19 = ed_redis %>%  filter(Educacion == 1) %>% as.data.frame()
-ed1_redis19 = ed1_redis19 %>% filter(year == 2019) %>% as.data.frame()
-
-table_redis_ed1<- rbind(psych::describe(ed1_redis99$Redistribution),
-               psych::describe(ed1_redis09$Redistribution),
-               psych::describe(ed1_redis19$Redistribution))
+table_redis_ed1<- rbind(psych::describe(ed1_gap99$redis_dummy),
+               psych::describe(ed1_gap09$redis_dummy),
+               psych::describe(ed1_gap19$redis_dummy))
 
 rownames(table_redis_ed1) <- c("1999","2009","2019")
 table_redis_ed1 <- table_redis_ed1 %>% select(n,mean,sd,median,trimmed,min,max)
@@ -798,18 +557,9 @@ table_redis_ed1
 ```
 
 ```{r}
-ed2_redis99 = ed_redis %>%  filter(Educacion == 2) %>% as.data.frame()
-ed2_redis99 = ed2_redis99 %>% filter(year == 1999) %>% as.data.frame()
-
-ed2_redis09 = ed_redis %>%  filter(Educacion == 2) %>% as.data.frame()
-ed2_redis09 = ed2_redis09 %>% filter(year == 2009) %>% as.data.frame()
-
-ed2_redis19 = ed_redis %>%  filter(Educacion == 2) %>% as.data.frame()
-ed2_redis19 = ed2_redis19 %>% filter(year == 2019) %>% as.data.frame()
-
-table_redis_ed2<- rbind(psych::describe(ed2_redis99$Redistribution),
-               psych::describe(ed2_redis09$Redistribution),
-               psych::describe(ed2_redis19$Redistribution))
+table_redis_ed2<- rbind(psych::describe(ed2_gap99$redis_dummy),
+               psych::describe(ed2_gap09$redis_dummy),
+               psych::describe(ed2_gap19$redis_dummy))
 
 rownames(table_redis_ed2) <- c("1999","2009","2019")
 table_redis_ed2 <- table_redis_ed2 %>% select(n,mean,sd,median,trimmed,min,max)
@@ -819,19 +569,11 @@ table_redis_ed2$years <- c(1999,2009,2019)
 
 table_redis_ed2
 ```
+
 ```{r}
-ed3_redis99 = ed_redis %>%  filter(Educacion == 3) %>% as.data.frame()
-ed3_redis99 = ed3_redis99 %>% filter(year == 1999) %>% as.data.frame()
-
-ed3_redis09 = ed_redis %>%  filter(Educacion == 3) %>% as.data.frame()
-ed3_redis09 = ed3_redis09 %>% filter(year == 2009) %>% as.data.frame()
-
-ed3_redis19 = ed_redis %>%  filter(Educacion == 3) %>% as.data.frame()
-ed3_redis19 = ed3_redis19 %>% filter(year == 2019) %>% as.data.frame()
-
-table_redis_ed3<- rbind(psych::describe(ed3_redis99$Redistribution),
-               psych::describe(ed3_redis09$Redistribution),
-               psych::describe(ed3_redis19$Redistribution))
+table_redis_ed3<- rbind(psych::describe(ed3_gap99$redis_dummy),
+               psych::describe(ed3_gap09$redis_dummy),
+               psych::describe(ed3_gap19$redis_dummy))
 
 rownames(table_redis_ed3) <- c("1999","2009","2019")
 table_redis_ed3 <- table_redis_ed3 %>% select(n,mean,sd,median,trimmed,min,max)
@@ -844,18 +586,9 @@ table_redis_ed3
 
 
 ```{r}
-ed4_redis99 = ed_redis %>%  filter(Educacion == 4) %>% as.data.frame()
-ed4_redis99 = ed4_redis99 %>% filter(year == 1999) %>% as.data.frame()
-
-ed4_redis09 = ed_redis %>%  filter(Educacion == 4) %>% as.data.frame()
-ed4_redis09 = ed4_redis09 %>% filter(year == 2009) %>% as.data.frame()
-
-ed4_redis19 = ed_redis %>%  filter(Educacion == 4) %>% as.data.frame()
-ed4_redis19 = ed4_redis19 %>% filter(year == 2019) %>% as.data.frame()
-
-table_redis_ed4<- rbind(psych::describe(ed4_redis99$Redistribution),
-               psych::describe(ed4_redis09$Redistribution),
-               psych::describe(ed4_redis19$Redistribution))
+table_redis_ed4<- rbind(psych::describe(ed4_gap99$redis_dummy),
+               psych::describe(ed4_gap09$redis_dummy),
+               psych::describe(ed4_gap19$redis_dummy))
 
 rownames(table_redis_ed4) <- c("1999","2009","2019")
 
@@ -867,26 +600,6 @@ table_redis_ed4$years <- c(1999,2009,2019)
 
 table_redis_ed4
 ```
-
-
-```{r}
-ed_redis99 = ed_redis %>% filter(year == 1999) %>% as.data.frame()
-ed_redis09 = ed_redis %>% filter(year == 2009) %>% as.data.frame()
-ed_redis19 = ed_redis %>% filter(year == 2019) %>% as.data.frame()
-
-table_redis_ed<- rbind(psych::describe(ed_redis99$Redistribution),
-               psych::describe(ed_redis09$Redistribution),
-               psych::describe(ed_redis19$Redistribution))
-
-rownames(table_redis_ed) <- c("1999","2009","2019")
-table_redis_ed <- table_redis_ed %>% select(n,mean,sd,median,trimmed,min,max)
-
-table_redis_ed$Educacion<-5
-table_redis_ed$years <- c(1999,2009,2019)
-
-table_redis_ed
-```
-
 
 ```{r}
 
@@ -916,8 +629,7 @@ table_ed_redistribution
 ##################################
 
 
-*1999*
-
+## 1999
 ```{r}
 load("input/data/processed/dat99.RData")
 #sjPlot::view_df(dat99)
@@ -943,13 +655,12 @@ sink()
 
 ```
 
-
-*2009*
-
+## 2009
 ```{r}
 load("input/data/processed/dat09.RData")
+#sjPlot::view_df(dat09)
 
-names(dat09)
+names(dat99)
 
 r09a<-lm(lngap_perc ~ + as.factor(educ_rec) + as.factor(Quint), data=dat09)
 r09b<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint), data=dat09)
@@ -966,10 +677,10 @@ sink()
 
 ```
 
-*2019*
-
+## 2019
 ```{r}
 load("input/data/processed/dat19.RData")
+#sjPlot::view_df(dat19)
 
 names(dat19)
 
@@ -988,6 +699,9 @@ sink()
 
 ```
 
+sink("output/tables/table19.txt")
+stargazer(list(r19a,r19b,r19c), type= "html")
+sink()
 
 
 
@@ -1000,77 +714,34 @@ sink()
 
 ```{r}
 #1999
-reg1a<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat99)
-reg2a<-glm(redis ~ lngap_perc + lngap_just + permer, family = binomial, data=dat99)
-reg3a<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media +  tecnico  , family = binomial, data=dat99)
-reg4a<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media + tecnico   + bajo + mediobajo + medio + medioalto + alto, family = binomial, data=dat99)
+reg1a<-glm(redis_dummy ~ lngap_perc + lngap_just, family = binomial, data=dat99)
+reg3a<-glm(redis_dummy ~ lngap_perc + lngap_just + as.factor(educ_rec) , family = binomial, data=dat99)
+reg4a<-glm(redis_dummy ~ lngap_perc + lngap_just + as.factor(educ_rec) + as.factor(Quint), family = binomial, data=dat99)
 
 
 #2009
-reg1b<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat09)
-reg2b<-glm(redis ~ lngap_perc + lngap_just + permer, family = binomial, data=dat09)
-reg3b<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media +  tecnico  , family = binomial, data=dat09)
-reg4b<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media + tecnico   + bajo + mediobajo + medio + medioalto + alto, family = binomial, data=dat09)
-
-
-
-#2019
-reg1c<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat19)
-reg2c<-glm(redis ~ lngap_perc + lngap_just + permer, family = binomial, data=dat19)
-reg3c<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media +  tecnico  , family = binomial, data=dat19)
-reg4c<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media + tecnico   + bajo + mediobajo + medio + medioalto + alto, family = binomial, data=dat19)
-
-regredis <- list(reg1a,reg2a,reg3a,reg4a,reg1b,reg2b,reg3b,reg4b,reg1c,reg2c,reg3c,reg4c)
-save(regredis, file = "output/tables/regredis.r")
-
-library(stargazer)
-stargazer(list(reg1a,reg2a,reg3a,reg4a,reg1b,reg2b,reg3b,reg4b,reg1c,reg2c,reg3c,reg4c), type="text")
-
-```
-
-
-
-
-variables de referencia: ed.universitaria e in.muy alto (más de 1 millon )
-
-## reg html
-
-```{r results='asis'}
-#1999
-reg1a<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat99)
-reg2a<-glm(redis ~ lngap_perc + lngap_just + permer, family = binomial, data=dat99)
-reg3a<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media +  tecnico  , family = binomial, data=dat99)
-reg4a<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media + tecnico   + bajo + mediobajo + medio + medioalto + alto, family = binomial, data=dat99)
-
-
-#2009
-reg1b<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat09)
-reg2b<-glm(redis ~ lngap_perc + lngap_just + permer, family = binomial, data=dat09)
-reg3b<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media +  tecnico  , family = binomial, data=dat09)
-reg4b<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media + tecnico   + bajo + mediobajo + medio + medioalto + alto, family = binomial, data=dat09)
-
+reg1b<-glm(redis_dummy ~ lngap_perc + lngap_just, family = binomial, data=dat09)
+reg3b<-glm(redis_dummy ~ lngap_perc + lngap_just + as.factor(educ_rec) , family = binomial, data=dat09)
+reg4b<-glm(redis_dummy ~ lngap_perc + lngap_just + as.factor(educ_rec) + as.factor(Quint), family = binomial, data=dat09)
 
 
 #2019
-reg1c<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat19)
-reg2c<-glm(redis ~ lngap_perc + lngap_just + permer, family = binomial, data=dat19)
-reg3c<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media +  tecnico  , family = binomial, data=dat19)
-reg4c<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media + tecnico   + bajo + mediobajo + medio + medioalto + alto, family = binomial, data=dat19)
+reg1c<-glm(redis_dummy ~ lngap_perc + lngap_just, family = binomial, data=dat19)
+reg3c<-glm(redis_dummy ~ lngap_perc + lngap_just + as.factor(educ_rec) , family = binomial, data=dat19)
+reg4c<-glm(redis_dummy ~ lngap_perc + lngap_just + as.factor(educ_rec) + as.factor(Quint), family = binomial, data=dat19)
+
+sink("output/tables/table_redis.txt")
+stargazer(list(reg1a,reg3a,reg4a,reg1b,reg3b,reg4b,reg1c,reg3c,reg4c), type="text")
+sink()
 
 
-library(stargazer)
-stargazer(list(reg1a,reg2a,reg3a,reg4a,reg1b,reg2b,reg3b,reg4b,reg1c,reg2c,reg3c,reg4c), type="html")
 ```
-
-
--> idea: quizas el efecto en el que lo percibido efecta lo justificado, ha ido disminuyendo por la disminucion de la percepcion.
-
 
 
 # Evaluar interaccion del tiempo en la relacion entre brechas justas y percibidas.
 
 ```{r}
-load("input/data/dataproc/issp9919.RData")
+load("input/data/processed/issp9919.RData")
 ```
 
 ```{r}
@@ -1080,7 +751,6 @@ library(dplyr)
 library(sjPlot)
 ```
 
-
 ```{r}
 reg_year<- lm(lngap_just~lngap_perc*year, data=clw3 )
 
@@ -1088,116 +758,9 @@ stargazer(reg_year, type="text")
 
 ```
 
-##
 ```{r}
 int<-plot_model(reg_year, type="int")
 int
  ggsave(int,filename = "output/images/int.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
 
 ```
-
-
-
-# crear variables
-
-## Variable desajuste: brecha real - brecha percibida.
-
-```{r pregunta redistribucion}
-load("input/data/dataproc/dat99.RData")
-load("input/data/dataproc/dat09.RData")
-load("input/data/dataproc/dat19.RData")
-load("input/data/dataproc/dataproccasen/brecha.Rdata")
-```
-
-
-
-
-
-```{r}
-dat99gap <- dat99 %>% dplyr::select("gap_perc","lngap_perc","gap_just","lngap_just", "redis")
-
-dat99gap<-na.omit(dat99gap)
-dat99gap$desajuste<-as.numeric(median(brecha_salarial[,2]) - dat99gap$gap_perc)
-dat99gap$subrepresenta<-ifelse(dat99gap$desajuste>=1,1,0)
-
-summary(dat99gap$desajuste)
-hist(dat99gap$desajuste)
-hist(dat99gap$subrepresenta)
-```
-
-
-```{r}
-dat09gap <- dat09 %>% dplyr::select("gap_perc","lngap_perc","gap_just","lngap_just", "redis")
-
-dat09gap<-na.omit(dat09gap)
-dat09gap$desajuste<-as.numeric(median(brecha_salarial[,2]) - dat09gap$gap_perc)
-dat09gap$subrepresenta<-ifelse(dat09gap$desajuste>=1,1,0)
-
-summary(dat09gap$desajuste)
-hist(dat09gap$desajuste)
-hist(dat09gap$subrepresenta)
-```
-
-
-```{r}
-dat19gap <- dat19 %>% dplyr::select("gap_perc","lngap_perc","gap_just","lngap_just", "redis")
-
-dat19gap<-na.omit(dat19gap)
-dat19gap$desajuste<-as.numeric(median(brecha_salarial[,3]) - dat19gap$gap_perc)
-dat19gap$subrepresenta<-ifelse(dat19gap$desajuste>=1,1,0)
-
-median(dat19gap$desajuste)
-hist(dat19gap$desajuste)
-hist(dat19gap$subrepresenta)
-```
-
-
-```{r}
-
-
-
-regdes99<-glm(redis ~  desajuste , family = binomial, data=dat99gap)
-regdes09<-glm(redis ~  desajuste , family = binomial, data=dat09gap)
-
-
-regdes191<-glm(redis ~  subrepresenta , family = binomial, data=dat19gap)
-regdes192<-glm(redis ~  desajuste , family = binomial, data=dat19gap)
-regdes193<-glm(redis ~  subrepresenta + desajuste , family = binomial, data=dat19gap)
-
-stargazer(list(regdes99,regdes09,regdes192,regdes191,regdes193), type="text")
-```
-
-## control por posicion politica.
-
-```{r}
-
-load("input/data/origin data/datacep/dat09.RData")
-load("input/data/origin data/datacep/dat19.RData")
-```
-
-
-
-```{r}
-#2009
-reg1b<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat09)
-reg2b<-glm(redis ~ lngap_perc + lngap_just + permerit, family = binomial, data=dat09)
-reg3b<-glm(redis ~ lngap_perc + lngap_just + permerit + c.izquerda + centro + c.derecha +  derecha + independiente + ninguna , family = binomial, data=dat09)
-
-
-
-#2019
-reg1c<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat19)
-reg2c<-glm(redis ~ lngap_perc + lngap_just + permerit, family = binomial, data=dat19)
-reg3c<-glm(redis ~ lngap_perc + lngap_just + permerit + c.izquerda + centro + c.derecha +  derecha + independiente + ninguna, family = binomial, data=dat19)
-
-stargazer(list(reg1b,reg2b,reg3b,reg1c,reg2c,reg3c), type="text")
-
-
-```
-
-# Modelos generales.
-#1999
-r99a<-glm(redis ~ lngap_perc + lngap_just, family = binomial, data=dat99)
-reg2a<-glm(redis ~ lngap_perc + lngap_just + permer, family = binomial, data=dat99)
-reg3a<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media +  tecnico  , family = binomial, data=dat99)
-reg4a<-glm(redis ~ lngap_perc + lngap_just + permer + basica + media + tecnico   + bajo + mediobajo + medio + medioalto + alto, family = binomial, data=dat99)
