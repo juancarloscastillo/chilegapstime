@@ -387,8 +387,6 @@ freq(dat09$ess)
 
 
 ### Save 09 data
-
-
 ```{r}
 save(dat09,file = "input/data/processed/dat09.RData")
 ```
@@ -562,9 +560,21 @@ freq(dat19$ess)
 
 ### Save 19 data
 ```{r}
+
 save(dat19,file = "input/data/processed/dat19.RData")
 ```
 
+
+
+### Save all years data
+```{r}
+dat99$year <- 1999
+dat09$year <- 2009
+dat19$year <- 2019
+clw3<- bind_rows(dat99,dat09)
+clw3<- bind_rows(clw3,dat19)
+save(clw3,file = "input/data/processed/clw3.Rdata")
+```
 
 
 # tratamiento CASEN 2000-2017
