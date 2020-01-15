@@ -795,3 +795,55 @@ int
  ggsave(int,filename = "output/images/int.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
 
 ```
+
+# Descriptivos
+
+
+```{r}
+load("input/data/processed/clw3.RData")
+names(clw3)
+
+datw3 <- clw3[,c("lngap_perc","lngap_just","educ_rec","Quint","redis_dummy")]
+
+datw3$redis_dummy <- factor(datw3$redis_dummy,levels = c(0,1),labels = c("Desacuerdo","De Acuerdo"))
+datw3$educ_rec    <- factor(datw3$educ_rec,levels = c(1,2,3,4),labels =c("Ed.Básica","Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria"))
+datw3$Quint       <- factor(datw3$Quint,levels = c(1,2,3,4,5),labels = c("Quintil 1","Quintil 2","Quintil 3","Quintil 4","Quintil 5"))
+
+
+tab01<- psych::describe(datw3[,c("lngap_perc","lngap_just")],fast=TRUE)
+tab01a<-select(tab01,n,mean,sd,min,max)
+tab01a<- round(tab01a,digits = 2)
+tab01a <- as.data.frame(tab01a)
+
+tab01a$mean <- paste0(tab01a$mean," (",tab01a$sd,")")
+tab01a$sd <- NULL
+names(tab01a) <- c("n","m_sd_pct","min","max")
+
+tab02<- rbind(
+questionr::freq(na.omit(datw3$educ_rec),valid = F),
+questionr::freq(na.omit(datw3$Quint),valid = F),
+questionr::freq(na.omit(datw3$redis_dummy),valid = F))
+tab02$min <- NA
+tab02$max <- NA
+names(tab02) <- c("n","m_sd_pct","min","max")
+
+tab03<- rbind(tab01a,tab02)
+options(knitr.kable.NA = '')
+
+
+tab03$var <- rownames(tab03)
+tab03$var[tab03$var=="lngap_perc"] <- "Percibida"
+tab03$var[tab03$var=="lngap_just"] <- "Justa"
+
+tab03$mod <- c("Brecha Salarial","Brecha Salarial","Educación","Educación","Educación","Educación",
+               "Ingreso","Ingreso","Ingreso","Ingreso","Ingreso", "Pref. Redistributivas","Pref. Redistributivas")
+
+tab03 <- select(tab03,mod,var,everything())
+
+sink("output/tables/desc.html")
+kable(tab03,format = "html",booktabs=T ,row.names = F,col.names = c("Dimensión","N","Variable/niveles","Media(DS)","Min","Max")) %>% 
+  kable_styling() %>% 
+    collapse_rows(columns = 1,valign = "middle")
+sink()
+```
+
