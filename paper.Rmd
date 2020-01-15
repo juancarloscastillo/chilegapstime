@@ -89,13 +89,9 @@ En general las teorías respecto a los determinantes de las preferencias conside
 
 En primer lugar se exponen las percepciones y justificaciones respecto a las diferencias salariales entre obreros y gerentes. Para ello utilizaremos la mediana reportada por los entrevistados, la cual es un mejor indicador de tendencia central de montos en pesos al no estar afectado por posibles valores altos en los extremos.
 
-**Grafico 1:  salario percibido de obrero y el gerente entre 1999 y 2019**
+![**Grafico 1**: salario percibido de obrero y el gerente entre 1999 y 2019](output/images/salario_per.png){#fig:brechper}
 
-![](output/images/salario_per.png)
-
-- XX Fco: agrandar tamaño de letra para todo el gráfico
-
-Lo primero que destaca de este gráfico son los cambios en la percepción de salarios tanto para obreros como para gerentes, con un claro aumento en el tiempo. A primera vista lo más evidente es el aumento en la percepción del salario del gerente: el salario percibido del obrero solo aumento $210.000 entre estos años, mientras que el del gerente alcanza un incremento de $5.000.000. entre 1999 y 2019. No obstante, es relevante notar que el salario percibido del obrero creció más que el del gerente en términos proporcionales entre 1999 y 2009, puesto que mientras el primero aumenta más de tres veces, el segundo no alcanza a superar las 3 veces de aumento (incremento de 2,7).
+Lo primero que destaca del Gráfico 1 son los cambios en la percepción de salarios tanto para obreros como para gerentes, con un claro aumento en el tiempo. A primera vista lo más evidente es el aumento en la percepción del salario del gerente: el salario percibido del obrero solo aumento $210.000 entre estos años, mientras que el del gerente alcanza un incremento de $5.000.000. entre 1999 y 2019. No obstante, es relevante notar que el salario percibido del obrero creció más que el del gerente en términos proporcionales entre 1999 y 2009, puesto que mientras el primero aumenta más de tres veces, el segundo no alcanza a superar las 3 veces de aumento (incremento de 2,7).
 
 Ahora bien, ¿qué tanto calza la percepción de desigualdad con la mediana real de salarios para cada año? Para ello, utilizaremos datos oficiales de la encuesta de caracterización socioeconómica CASEN para los años respectivos (XX nota al pie con el detalle de los análisis). Los resultados se muestran en el gráfico siguiente:
 
@@ -155,19 +151,19 @@ Dado que los grupos de menor estatus son los que perciben menor desigualdad, es 
 
 ## Modelos
 
-En esta última parte del análisis se presentan una serie de modelos de regresión tanto de la brecha percibida como de la brecha justa, así como sus variaciones por año.
+En esta última parte del análisis se presentan una serie de modelos de regresión tanto de la brecha percibida como de la brecha justa, así como sus variaciones en el tiempo. Se presenta una tabla de modelos para cada año, y luego una tabla final donde se introduce el tiempo como una covariable.
 
-[XX esto requiere revisar recodificación de variables, sobre todo educación!!]
-
-
-Comezando con el año 99,
+La Tabla X presenta los resultados de los modelos para la brecha percibida y justa, los que incluyen educación e ingreso como variables independientes. En el caso del Modelo 1 para la brecha percibida, vemos que para el primer bloque de variables de educación (que tienen la categoría Básica Completa como referencia) todas muestran diferencias significativas, es decir, mayor percepción de desigualdad en mayores niveles de educación. Lo mismo se observa en relación a quintiles de ingreso, con un aumento lineal más claro. Por lo tanto, el año 1999 se aprecia de manera bastante clara la asociación estatus-percepción de desigualdad. En el caso de la brecha justa esto sucede solo con ingreso (controlado por educación), lo cual va en línea con una hipótesis de corte racional: a mayores ingresos, mayor justificación de la desigualdad. Sin embargo, vemos que estos efectos se anulan al momento de incorporar la percepción de desigualdad en el Modelo 3. Esto sugiere que si bien existen diferencias de estatus en percepción y justificación de desigualdad, cuando se considera la desigualdad percibida el estatus no genera diferencias en la percepción de la desigualdad. Dicho de otra manera, la diferencia entre percepción y justificación es similar para los distintos grupos de estatus, lo cual va en línea con una hipótesis de consenso entre distintos grupos de estatus respecto a la justificación de la desigualdad.
 
 
-<object width="800" height="1000" data="output/tables/table99.html"></object>
+<object width="800" height="800" data="output/tables/table99.html"></object>
 
-<object width="800" height="1000" data="output/tables/table09.html"></object>
+Respecto del año 2009, vemos en la tabla X una tendencia similar para brecha percibida tanto en ingresos como educación, si bien menos marcada que en 1999. Las diferencias aparecen más claramente en la brecha justa, donde educación (principalmente a nivel universitario) aparece con un efecto significativo, además del de ingreso.
 
-<object width="800" height="1000" data="output/tables/table19.html"></object>
+
+<object width="800" height="800" data="output/tables/table09.html"></object>
+
+<object width="800" height="800" data="output/tables/table19.html"></object>
 
 
 # A modo de conclusión
