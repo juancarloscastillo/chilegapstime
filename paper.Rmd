@@ -84,10 +84,13 @@ En general las teorías respecto a los determinantes de las preferencias conside
 
 # Datos, variables y métodos
 
-- por elaborar - tomar como referencia @castillo_inequality_2012]
-
-
 - incluir tabla descriptivos (`stargazer`), Tabla 1
+
+<object width="800" height="800" data="output/tables/desc.html"></object>
+
+
+
+
 
 # Resultados
 
