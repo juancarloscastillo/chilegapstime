@@ -689,7 +689,7 @@ r19b<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint), data=dat19)
 r19c<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + lngap_perc, data=dat19)
 
 sink("output/tables/table19.html")
-stargazer(list(r19a,r19b,r19c), type= "html",
+stargazer::stargazer(list(r19a,r19b,r19c), type= "text",
           covariate.labels = c("Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria",
                                "Quintil 2", "Quintil 3","Quintil 2","Quintil 5",
                                "Brecha Percibida"),

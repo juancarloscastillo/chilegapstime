@@ -6,7 +6,7 @@ output:
         smart: false
         toc: true
         number_sections: true
-bibliography: "input/bib/biblio.bib"
+bibliography: "input/bib/Link to My Library.bib"
 csl: "input/bib/apa6.csl"
 ---
 
@@ -25,14 +25,11 @@ rm(list=ls())
 **Juan Carlos Castillo** - juancastillov@uchile.cl, [jc-castillo.com](http://jc-castillo.com)
 <br>**Francisco Meneses, Julio Iturra, Luis Maldonado & Jorge Atria**
 
-**Probando add desde branch**
-
-
 # Introducción
 
-La desigualdad económica es un tema que se ha tomado la agenda nacional e internacional en el último tiempo. Las amenazas que representa la desigualdad para la democracia [@Bartels2008; @schlozman_unheavenly_2012], la creciente desigualdad entre países [@milanovicGlobalInequalityNew2016], así como también la concentración de los ingresos en el 1% más rico (top incomes) representan un desafío a las ciencias sociales a la hora de dar cuenta de los orígenes y consecuencias de la desigualdad. Este desafío parece ser ahora más relevante que nunca en el contexto de estallido social Chileno desde Octubre de 2019, donde gran parte de las demandas se asocian directamente al concepto de desigualdad.
+La desigualdad económica es un tema que se ha tomado la agenda nacional e internacional en el último tiempo. Las amenazas que representa la desigualdad para la democracia [@bartels_Unequal_2010;  @schlozman_unheavenly_2012], la creciente desigualdad entre países [@milanovicGlobalInequalityNew2016], así como también la concentración de los ingresos en el 1% más rico (top incomes) representan un desafío a las ciencias sociales a la hora de dar cuenta de los orígenes y consecuencias de la desigualdad. Este desafío parece ser ahora más relevante que nunca en el contexto de estallido social Chileno desde Octubre de 2019, donde gran parte de las demandas se asocian directamente al concepto de desigualdad.
 
-Las aproximaciones tradicionales de disciplinas como la economía han puesto el énfasis en la medición de la desigualdad objetiva vía ingresos, mientras la sociología se ha caracterizado por el estudio de clases ocupacionales y movilidad social. También desde la sociología han surgido perspectivas que enfatizan el rol de la subjetividad, relevando aspectos como la medida en que esta desigualdad es percibida y eventualmente rechazada (o justificada) por los individuos  [@Araujo2011; @castillo_inequality_2012; @mac-clure_Judgments_2015]. El foco en percepciones, justificaciones y preferencias respecto de desigualdad ha emergido con fuerza durante la última década [@mccall_undeserving_2013-1; @alesina_preferences_2011; @rueda_Who_2019], caracterizada por crisis sociales a nivel internacional que plantean claras demandas por la reducción de la desigualdad económica.
+Las aproximaciones tradicionales de disciplinas como la economía han puesto el énfasis en la medición de la desigualdad objetiva vía ingresos, mientras la sociología se ha caracterizado por el estudio de clases ocupacionales y movilidad social. También desde la sociología han surgido perspectivas que enfatizan el rol de la subjetividad, relevando aspectos como la medida en que esta desigualdad es percibida y eventualmente rechazada (o justificada) por los individuos  [@castillo_inequality_2012; @mac-clure_Judgments_2015]. El foco en percepciones, justificaciones y preferencias respecto de desigualdad ha emergido con fuerza durante la última década [@mccall_undeserving_2013-1; @alesina_preferences_2011; @rueda_Who_2019], caracterizada por crisis sociales a nivel internacional que plantean claras demandas por la reducción de la desigualdad económica.
 
 Volviendo al caso particular de Chile y sus reivindicaciones sociales actuales, emergen visiones contrapuestas. Por un lado se señala que Chile a transitado un proceso de modernización exitoso y ejemplar en América Latina, aumentando significativamente su crecimiento económico y a la vez con una disminución de la desigualdad medida mediante el índice de Gini, tal como se muestra en las siguientes figuras:
 
@@ -40,9 +37,11 @@ Volviendo al caso particular de Chile y sus reivindicaciones sociales actuales, 
 
 <iframe width="400" height="325" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" src="https://www.google.com/publicdata/embed?ds=d5bncppjof8f9_&amp;ctype=l&amp;strail=false&amp;bcs=d&amp;nselm=h&amp;met_y=si_pov_gini&amp;scale_y=lin&amp;ind_y=false&amp;rdim=region&amp;idim=country:CHL:COL:PER:ARG:MEX&amp;ifdim=region&amp;tstart=631854000000&amp;tend=1452308400000&amp;hl=es&amp;dl=es&amp;ind=false"></iframe>
 
+<br>
+
 Por otro lado, se plantea que las cifras macroeconómicas no reflejan la realidad cotidiana del país, caracterizada por una privatización y precarización en ámbitos clave de la política social como salud, educación y pensiones, además de un contexto creciente de abusos, corrupción y desigualdad en el trato [@larranaga_Desiguales_2017], como se presenta a continuación en la figura X:
 
-![](input/images/tratoPNUD.png)
+![](input/images/tratoPNUD.png){ width=80%}
 
 Ante la paradoja de mejoras en aspectos objetivos acompañados de un fuerte malestar subjetivo, surge la pregunta sobre el vínculo entre la desigualdad económica y su justificación: ¿Se percibe en Chile un cambio en los niveles de desigualdad? ¿Ha disminuido la tolerancia/justificación de la desigualdad en Chile? ¿Cómo se relacionan los cambios en la justificación de desigualdad con preferencias por redistribución económica?
 
@@ -62,7 +61,7 @@ Desde la sociología se ha dado tradicionalmente un acento empírico al estudio 
 
 El estudio de la desigualdad en términos subjetivos se puede abordar desde distintas perspectivas y metodologías. Una línea que posee un claro énfasis comp}arativo internacional es la que se establece mediante el International Social Justice Project, que realiza la primera encuesta comparativa internacional en temas de justicia y desigualdad en países capitalistas y postcomunistas en el año 1991 [@kluegel_social_1995-1]. Desde ese entonces un desafío en este tipo de investigación tiene que ver con la manera de abordar el tema de desigualdad. Una de las principales limitaciones de preguntas directas acerca de desigualdad (en particular sobre desigualdad percibida) es que la mayor parte de la población actualmente tiende  declarar una alta desigualdad, generando escasa variabilidad y por lo tanto haciendo difícil capturar diferencias entre personas y en el tiempo  [@castillo_percepcion_2012]. Al respecto, una posible alternativa para analizar tanto percepción como justificación de desigualdad mediante encuestas consiste en medidas indirectas de desigualdad salarial subjetiva, conocidas como brechas salariales percibidas y justas [@castillo_cual_2009]:
 
-![](input/images/gaps.png)
+![](input/images/gaps.png){ width=70% }
 
 Para ello, se utilizan preguntas respecto de salarios percibidos y justos en relación a ocupaciones que expresan los extremos del continuo de estatus, como obrero y gerente. Las respuestas son registradas como una magnitud en pesos, y luego con estas respuestas es posible elaborar las brechas percibidas y justas, dividiendo el monto otorgado al gerente por el monto del obrero. Esta magnitud expresa cuánto más se percibe o justifica que un gerente gana respecto de un obrero.
 
@@ -158,12 +157,16 @@ La Tabla X presenta los resultados de los modelos para la brecha percibida y jus
 
 <object width="800" height="800" data="output/tables/table99.html"></object>
 
-Respecto del año 2009, vemos en la tabla X una tendencia similar para brecha percibida tanto en ingresos como educación, si bien menos marcada que en 1999. Las diferencias aparecen más claramente en la brecha justa, donde educación (principalmente a nivel universitario) aparece con un efecto significativo, además del de ingreso.
-
+Respecto del año 2009, vemos en la tabla X una tendencia similar para brecha percibida tanto en ingresos como educación, si bien menos marcada que en 1999. También comparando con la ola anterior las diferencias aparecen más claras en la brecha justa, donde educación (principalmente a nivel universitario) aparece con un efecto significativo, además del de ingreso. En cuanto al modelo 3 con la brecha percibida como covariable se observa que el coeficiente asociado a la pertenencia al mayor quintil de ingresos ahora es significativo. Por lo tanto, aquellos pertencientes a este grupo justifican mayor desigualdad independiente de la desigualdad percibida.
 
 <object width="800" height="800" data="output/tables/table09.html"></object>
 
+En la tabla final de esta secuencia, correspondiente al año 2019, vemos que en la brecha percibida hay solo evidencia de la influencia de la educación en la brecha percibida, mientras en la brecha justa ya no existen diferencias entre los grupos de estatus. Recordemos que la disminución de las diferencias entre grupos de estatus ya era posible de observar en los gráficos sobre educación y brechas, donde hacia el 2019 se presenta una clara tendencia al consenso entre grupos educacionales tanto respecto de la brecha percibida como de la brecha justa.
+
 <object width="800" height="800" data="output/tables/table19.html"></object>
+
+Finalmente, la tabla
+
 
 
 # A modo de conclusión
