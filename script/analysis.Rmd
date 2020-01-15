@@ -689,7 +689,7 @@ r19b<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint), data=dat19)
 r19c<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + lngap_perc, data=dat19)
 
 sink("output/tables/table19.html")
-stargazer::stargazer(list(r19a,r19b,r19c), type= "text",
+stargazer::stargazer(list(r19a,r19b,r19c), type= "html",
           covariate.labels = c("Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria",
                                "Quintil 2", "Quintil 3","Quintil 2","Quintil 5",
                                "Brecha Percibida"),
@@ -699,9 +699,40 @@ sink()
 
 ```
 
-sink("output/tables/table19.txt")
-stargazer(list(r19a,r19b,r19c), type= "html")
+
+## 1999-2019
+
+``` {r}
+load("input/data/processed/clw3.Rdata")
+#sjPlot::view_df(clw3)
+
+names(clw3)
+
+rta<-lm(lngap_perc ~ + as.factor(educ_rec) + as.factor(Quint) + as.factor(year), data=clw3)
+
+rtb<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + as.factor(year), data=clw3)
+rtc<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + lngap_perc + as.factor(year), data=clw3)
+
+sink("output/tables/table_gapyear.html")
+stargazer::stargazer(list(rta,rtb,rtc), type="html",
+covariate.labels = c("Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria", "Quintil 2", "Quintil 3","Quintil 2","Quintil 5", "Brecha Percibida", "Año 2009", "Año 2019"),
+dep.var.labels = c("Brecha Percibida", "Brecha Justa"),
+dep.var.caption  = "Variables dependientes")
 sink()
+
+```
+
+```{r}
+pacman::p_load(lme4,foreign, stargazer, texreg, lattice, sjPlot, dplyr, ggeffects) # paquetes a cargar
+
+reg_3year=lmer(lngap_just ~ 1 + lngap_perc +  as.factor(educ_rec) + as.factor(Quint) +(1 + lngap_perc | year), data = clw3)
+graf_year3=ggpredict(reg_3year, terms = c("lngap_perc","year [sample=3]"), type="re")
+grafyear3<-plot(graf_year3)
+
+ggsave(grafyear3,filename = "output/images/graf_year3.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
+#load(file="output/images/graf_year3.r")
+```
+
 
 
 
