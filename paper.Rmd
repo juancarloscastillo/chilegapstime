@@ -180,17 +180,22 @@ En la tabla final de esta secuencia, correspondiente al año 2019, vemos que en 
 
 <object width="800" height="750" data="output/tables/table19.html"></object>
 
-Finalmente, la tabla X presenta los modelos para todos los años, incluyendo el año como una covariable que toma como referencia la primera ola de 1999. Dos aspectos a destacar de esta tabla son a) que las variables de estatus se asocian de manera positiva con la brecha percibida y también con brecha justa, aunque con menor intensidad en el caso de la última, y b) que el año 2019 es el que presenta una diferencia respecto de los dos anteriores en la disminución tanto de la brecha justa como de la brecha percibida.
+Finalmente, la tabla 5 presenta los modelos para todos los años, incluyendo el año como una covariable que toma como referencia la primera ola de 1999. Dos aspectos a destacar de esta tabla son a) que las variables de estatus se asocian de manera positiva con la brecha percibida y también con brecha justa, aunque con menor intensidad en el caso de la última, y b) que el año 2019 es el que presenta una diferencia respecto de los dos anteriores en la disminución tanto de la brecha justa como de la brecha percibida.
 
 **Tabla 5**: Modelos de regresión para brecha percibida y justa en 1999, 2009 y 2019.
 
-<object width="800" height="800" data="output/tables/table_gapyear.html"></object>
+<object width="800" height="900" data="output/tables/table_gapyear.html"></object>
+
+
+<!---
 
 **Tabla 6**: Modelos de regresión para brecha percibida y justa en 1999, 2009 y 2019, con interaccion
 
-<object width="800" height="800" data="output/tables/table_gapyear_int.html"></object>
+<object width="800" height="900" data="output/tables/table_gapyear_int.html"></object>
 
 ![**Grafico 6**:  Relacion entre Brechas segun año ](output/images/graf_year3.png)
+
+--->
 
 # A modo de conclusión
 
