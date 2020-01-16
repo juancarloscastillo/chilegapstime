@@ -722,6 +722,27 @@ sink()
 
 ```
 
+## 1999-2019 con interaccion. 
+```{r}
+load("input/data/processed/clw3.Rdata")
+#sjPlot::view_df(clw3)
+
+names(clw3)
+
+rta<-lm(lngap_perc ~ + as.factor(educ_rec) + as.factor(Quint) + as.factor(year), data=clw3)
+rtb<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + as.factor(year), data=clw3)
+rtc<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + lngap_perc + as.factor(year)*lngap_perc, data=clw3)
+
+sink("output/tables/table_gapyear_int.html")
+stargazer::stargazer(list(rta,rtb,rtc), type="html",
+covariate.labels = c("Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria", "Quintil 2", "Quintil 3","Quintil 2","Quintil 5", "Brecha Percibida", "Año 2009", "Año 2019", "Brecha Percibida: 2009","Brecha Percibida: 2019"),
+dep.var.labels = c("Brecha Percibida", "Brecha Justa"))
+sink()
+
+```
+
+
+
 ```{r}
 pacman::p_load(lme4,foreign, stargazer, texreg, lattice, sjPlot, dplyr, ggeffects) # paquetes a cargar
 
@@ -847,3 +868,15 @@ kable(tab03,format = "html",booktabs=T ,row.names = F,col.names = c("Dimensión"
 sink()
 ```
 
+# Descriptivos 2
+
+```{r}
+clw3_des <- clw3 %>% select(gap_perc,gap_just,Quint,educ_rec) %>% rename("Brecha Salarial Percibida"=gap_perc,
+               "Brecha Salarial Justa"=gap_just,
+               "Quintil"=Quint,
+               "Educacion"=educ_rec)
+
+sink("output/tables/desc_2.html")
+stargazer(clw3_des, type="html")
+sink()
+```
