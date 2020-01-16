@@ -6,7 +6,7 @@ output:
         smart: false
         toc: true
         number_sections: true
-bibliography: "input/bib/Link to My Library.bib"
+bibliography: "input/bib/My Library.bib"
 csl: "input/bib/apa6.csl"
 ---
 

@@ -97,10 +97,11 @@ salario_per <-  ggplot(data=table_pertot, aes(x=reorder(as.factor(year),-median)
      scale_fill_brewer(palette="Paired") +
      theme(legend.position="top") +
      labs(fill = " ") +
+      guides(fill = guide_legend(reverse = TRUE)) +
     coord_flip()
 
 salario_per
- ggsave(salario_per,filename = "output/images/salario_per.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+ ggsave(salario_per,filename = "output/images/salario_per.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
 ```
 
 
@@ -179,6 +180,7 @@ salario_justo <- ggplot(data=table_justot, aes(x=reorder(as.factor(year),-year),
      scale_fill_brewer(palette="Paired") +
      theme(legend.position="top") +
      labs(fill = " ") +
+     guides(fill = guide_legend(reverse = TRUE)) +
     coord_flip()
 
 
@@ -221,11 +223,12 @@ salario_justo_real <- ggplot(data=table_justot, aes(x=reorder(as.factor(year),-y
      scale_fill_brewer(palette="Paired") +
      theme(legend.position="top") +
      labs(fill = " ") +
+      guides(fill = guide_legend(reverse = TRUE)) +
     coord_flip()
 
 salario_justo_real
 
-ggsave(salario_justo_real,filename = "output/images/salario_justo_real.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+ggsave(salario_justo_real,filename = "output/images/salario_justo_real.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
 ```
 
 ## Brechas salariales.
@@ -311,7 +314,7 @@ table_gap_total$ocup2 <- factor(table_gap_total$ocup, levels=c(1,2,3), labels=c(
 
 brechas
 
- ggsave(brechas,filename = "output/images/Brechas.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+ ggsave(brechas,filename = "output/images/Brechas.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
 
 
 ```
@@ -432,10 +435,11 @@ table_ed_gapper <-  ggplot(data=table_ed_gapper, aes(x=reorder(as.factor(years),
      scale_fill_brewer(palette="Paired") +
      theme(legend.position="top") +
      labs(fill = " ") +
+      guides(fill = guide_legend(reverse = TRUE)) +
     coord_flip()
 table_ed_gapper
 
- ggsave(table_ed_gapper,filename = "output/images/gapper_educ.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+ ggsave(table_ed_gapper,filename = "output/images/gapper_educ.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
 
 ```
 
@@ -529,10 +533,11 @@ table_ed_gapjus <-  ggplot(data=table_ed_gapjus, aes(x=reorder(as.factor(years),
      scale_fill_brewer(palette="Paired") +
      theme(legend.position="top") +
      labs(fill = " ") +
+      guides(fill = guide_legend(reverse = TRUE)) +
     coord_flip()
 table_ed_gapjus
 
- ggsave(table_ed_gapjus,filename = "output/images/gapjus_educ.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+ ggsave(table_ed_gapjus,filename = "output/images/gapjus_educ.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
 ```
 
 
@@ -616,10 +621,11 @@ table_ed_redistribution <-  ggplot(data=table_ed_redistribution, aes(x=reorder(a
      scale_fill_brewer(palette="Paired") +
      theme(legend.position="top") +
      labs(fill = " ") +
+      guides(fill = guide_legend(reverse = TRUE)) +
     coord_flip()
 table_ed_redistribution
 
- ggsave(table_ed_redistribution,filename = "output/images/rediseduc.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+ ggsave(table_ed_redistribution,filename = "output/images/rediseduc.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
 ```
 
 ##################################
@@ -647,7 +653,7 @@ stargazer(list(r99a,r99b,r99c), type= "html",
           dep.var.caption  = "Variables dependientes")
 sink()
 
-sink("output/tables/table99.txt")
+sink("output/tables/table99.html")
 stargazer(list(r99a,r99b,r99c), type= "html")
 sink()
 
@@ -783,8 +789,8 @@ reg1c<-glm(redis_dummy ~ lngap_perc + lngap_just, family = binomial, data=dat19)
 reg3c<-glm(redis_dummy ~ lngap_perc + lngap_just + as.factor(educ_rec) , family = binomial, data=dat19)
 reg4c<-glm(redis_dummy ~ lngap_perc + lngap_just + as.factor(educ_rec) + as.factor(Quint), family = binomial, data=dat19)
 
-sink("output/tables/table_redis.txt")
-stargazer(list(reg1a,reg3a,reg4a,reg1b,reg3b,reg4b,reg1c,reg3c,reg4c), type="text")
+sink("output/tables/table_redis.html")
+stargazer(list(reg1a,reg3a,reg4a,reg1b,reg3b,reg4b,reg1c,reg3c,reg4c), type="html")
 sink()
 
 
@@ -794,7 +800,7 @@ sink()
 # Evaluar interaccion del tiempo en la relacion entre brechas justas y percibidas.
 
 ```{r}
-load("input/data/processed/issp9919.RData")
+load("input/data/processed/clw3.RData")
 ```
 
 ```{r}
@@ -814,7 +820,7 @@ stargazer(reg_year, type="text")
 ```{r}
 int<-plot_model(reg_year, type="int")
 int
- ggsave(int,filename = "output/images/int.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+ ggsave(int,filename = "output/images/int.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
 
 ```
 
@@ -877,6 +883,7 @@ clw3_des <- clw3 %>% select(gap_perc,gap_just,Quint,educ_rec) %>% rename("Brecha
                "Brecha Salarial Justa"=gap_just,
                "Quintil"=Quint,
                "Educacion"=educ_rec)
+
 sink("output/tables/desc_2.html")
 stargazer(clw3_des, type="html")
 sink()
