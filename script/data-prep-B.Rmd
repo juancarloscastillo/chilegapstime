@@ -218,6 +218,7 @@ dat99$ess <- cl99$v46 # save estatus subjetivo en dat99
 ### Save 99 data
 ```{r}
 save(dat99,file = "input/data/processed/dat99.RData")
+names(dat99)
 ```
 
 
@@ -568,145 +569,155 @@ save(dat19,file = "input/data/processed/dat19.RData")
 
 ### Save all years data
 ```{r}
+load("input/data/processed/dat99.RData")
+load("input/data/processed/dat09.RData")
+load("input/data/processed/dat19.RData")
+
 dat99$year <- 1999
 dat09$year <- 2009
 dat19$year <- 2019
 clw3<- bind_rows(dat99,dat09)
 clw3<- bind_rows(clw3,dat19)
 save(clw3,file = "input/data/processed/clw3.Rdata")
+names(clw3)
 ```
 
 
-# tratamiento CASEN 2000-2017
+<!-- # tratamiento CASEN 2000-2017 -->
 
-##Casen 2000
-```{r}
-load(file="input/data/original/datacasen/casen2000.RData")
+<!-- ##Casen 2000 -->
+<!-- ```{r} -->
+<!-- load(file="input/data/original/datacasen/casen2000.RData") -->
 
-##sjPlot::view_df(select(cs2000, "o8"), show.values = T, show.labels = T, max.len = 1000)
-                #hacer codebook para o8
+<!-- ##sjPlot::view_df(select(cs2000, "o8"), show.values = T, show.labels = T, max.len = 1000) -->
+<!--                 #hacer codebook para o8 -->
 
-#peones de...
-casen_obreros2000 = cs2000 %>% dplyr::filter(o8>=9210, o8<=9322)
-casen_obreros2000 <- casen_obreros2000 %>% dplyr::select(yopraj)
-casen_obreros2000<- na.omit(casen_obreros2000)
+<!-- #peones de... -->
+<!-- casen_obreros2000 = cs2000 %>% dplyr::filter(o8>=9210, o8<=9322) -->
+<!-- casen_obreros2000 <- casen_obreros2000 %>% dplyr::select(yopraj) -->
+<!-- casen_obreros2000<- na.omit(casen_obreros2000) -->
 
-#gerentes de
-casen_gerente2000 = cs2000 %>% dplyr::filter(o8==1210) #gerente empresa
-#casen_gerente2000 <- casen_gerente2000 %>% dplyr::select(yopraj,o13,o10,o28, o11)
+<!-- #gerentes de -->
+<!-- casen_gerente2000 = cs2000 %>% dplyr::filter(o8==1210) #gerente empresa -->
+<!-- #casen_gerente2000 <- casen_gerente2000 %>% dplyr::select(yopraj,o13,o10,o28, o11) -->
 
-casen_gerente2000 = casen_gerente2000 %>% dplyr::filter(o10==1)
-casen_gerente2000 = casen_gerente2000 %>% dplyr::filter(o13=="E" )
-
-
-brecha_real2000<-(median(casen_gerente2000$yopraj))/(median(casen_obreros2000$yopraj))
-
-summary(casen_obreros2000$yopraj)
-summary(casen_gerente2000$yopraj)
-summary(brecha_real2000)
-table(casen_gerente2000$o13)
-
-#sjPlot::view_df(casen_gerente2000, show.frq = T, max.len = 100000)#hacer codebook
-```
-##Casen 2009
-
-```{r}
-load(file="input/data/original/datacasen/casen2009.RData")
-```
-
-```{r}
-##sjPlot::view_df(select(cs2009, "c_o12"), show.values = T, show.labels = T, max.len = 1000)
-
-#ocupacion:c_o12
-#ingreso: yopraj
-
-#peones de...
-casen_obreros2009 = cs2009 %>% dplyr::filter(c_o12>=9200, c_o12<=9322)
-casen_obreros2009 <- casen_obreros2009 %>% dplyr::select(yopraj)
-casen_obreros2009<- na.omit(casen_obreros2009)
-
-#gerentes de
-casen_gerente2009 = cs2009 %>% dplyr::filter(c_o12==1210) #gerente general empresa
-casen_gerente2009 <- casen_gerente2009 %>% dplyr::select(yopraj,o14,o23)
-casen_gerente2009 = casen_gerente2009 %>% dplyr::filter(o14=="F")    #gran empresa | cuando se utilizan los dos filtros se llega  a una brecha de 52
-casen_gerente2009 = casen_gerente2009 %>% dplyr::filter(o23==1)      # filtro por ser patron en la empresa.
-casen_gerente2009<-na.omit(casen_gerente2009)
-table(casen_gerente2009$o14)
-#sjPlot::view_df(casen_gerente2009, show.frq = T, max.len = 1000)
-
-brecha_real2009<-(median(casen_gerente2009$yopraj))/(median(casen_obreros2009$yopraj))
-
-summary(casen_obreros2009$yopraj)
-summary(casen_gerente2009$yopraj)
-brecha_real2009
-#sjPlot::view_df(casen_gerente2009, show.frq = T, max.len = 300) # hacer codebook
-```
-
-```{r}
-load(file="input/data/original/datacasen/casen2017.RData")
-```
-
-## Casen 2017
-```{r}
-#codecasen17<-#sjPlot::view_df(cs2017)#hacer codebook
-##sjPlot::view_df(cs2017, show.values = T, show.labels = T, max.len = 1000)
-                #hacer codebook para o8
-
-#peones de...
-casen_obreros2017 = cs2017 %>% dplyr::filter(oficio4>=9211, oficio4<=9322)
-casen_obreros2017 <- casen_obreros2017 %>% dplyr::select(y0101, o23)
-casen_obreros2017<- na.omit(casen_obreros2017)
-
-#gerentes de
-#casen_gerente2017 = cs2017 %>% dplyr::filter(oficio4 %in% c(1210:1319)) # Filtro con todos los gerentes
-casen_gerente2017 = cs2017 %>% dplyr::filter(oficio4==1210) #gerente empresa
-casen_gerente2017 <- casen_gerente2017 %>% dplyr::select(oficio4, y0101,o23, o15,yrut,y0701,y0801)
-casen_gerente2017 = casen_gerente2017 %>% dplyr::filter(o23=="F") #gran empresa > 100 trabajadores
-casen_gerente2017 = casen_gerente2017 %>% dplyr::filter(o15 == 1) # empleador
-
-#casen_gerente2017 = casen_gerente2017 %>% dplyr::filter(y0701 <= 1000000) # empleador
+<!-- casen_gerente2000 = casen_gerente2000 %>% dplyr::filter(o10==1) -->
+<!-- casen_gerente2000 = casen_gerente2000 %>% dplyr::filter(o13=="E" ) -->
 
 
+<!-- brecha_real2000<-(median(casen_gerente2000$yopraj))/(median(casen_obreros2000$yopraj)) -->
 
-# yrut # retiro de utilidades
-#y0701 #independiente principal
-#table(casen_gerente2017$o15)
-# #sjPlot::view_df(casen_gerente2017, show.frq = T, max.len = 1000)
+<!-- summary(casen_obreros2000$yopraj) -->
+<!-- summary(casen_gerente2000$yopraj) -->
+<!-- summary(brecha_real2000) -->
+<!-- table(casen_gerente2000$o13) -->
 
-brecha_real2017<-(median(casen_gerente2017$y0701,na.rm = T))/(median(casen_obreros2017$y0101,na.rm = T))
+<!-- #sjPlot::view_df(casen_gerente2000, show.frq = T, max.len = 100000)#hacer codebook -->
+<!-- ``` -->
+<!-- ##Casen 2009 -->
 
-summary(casen_obreros2017$y0101)
-table(casen_gerente2017$y0701)
-brecha_real2017
+<!-- ```{r} -->
+<!-- load(file="input/data/original/datacasen/casen2009.RData") -->
+<!-- ``` -->
 
-summary(cs2017$y0101)
-summary(cs2017$y0701)
+<!-- ```{r} -->
+<!-- ##sjPlot::view_df(select(cs2009, "c_o12"), show.values = T, show.labels = T, max.len = 1000) -->
 
-```
+<!-- #ocupacion:c_o12 -->
+<!-- #ingreso: yopraj -->
+
+<!-- #peones de... -->
+<!-- casen_obreros2009 = cs2009 %>% dplyr::filter(c_o12>=9200, c_o12<=9322) -->
+<!-- casen_obreros2009 <- casen_obreros2009 %>% dplyr::select(yopraj) -->
+<!-- casen_obreros2009<- na.omit(casen_obreros2009) -->
+
+<!-- #gerentes de -->
+<!-- casen_gerente2009 = cs2009 %>% dplyr::filter(c_o12==1210) #gerente general empresa -->
+<!-- casen_gerente2009 <- casen_gerente2009 %>% dplyr::select(yopraj,o14,o23) -->
+<!-- casen_gerente2009 = casen_gerente2009 %>% dplyr::filter(o14=="F")    #gran empresa | cuando se utilizan los dos filtros se llega  a una brecha de 52 -->
+<!-- casen_gerente2009 = casen_gerente2009 %>% dplyr::filter(o23==1)      # filtro por ser patron en la empresa. -->
+<!-- casen_gerente2009<-na.omit(casen_gerente2009) -->
+<!-- table(casen_gerente2009$o14) -->
+<!-- #sjPlot::view_df(casen_gerente2009, show.frq = T, max.len = 1000) -->
+
+<!-- brecha_real2009<-(median(casen_gerente2009$yopraj))/(median(casen_obreros2009$yopraj)) -->
+
+<!-- summary(casen_obreros2009$yopraj) -->
+<!-- summary(casen_gerente2009$yopraj) -->
+<!-- brecha_real2009 -->
+<!-- #sjPlot::view_df(casen_gerente2009, show.frq = T, max.len = 300) # hacer codebook -->
+<!-- ``` -->
 
 
-```{r}
-brecha_salarial<- rbind(psych::describe(brecha_real2000),
-               psych::describe(brecha_real2009),
-               psych::describe(brecha_real2017))
+<!-- ```{r} -->
+<!-- load(file="input/data/original/datacasen/casen2017.RData") -->
+<!-- ``` -->
 
-save(brecha_salarial, file = "input/data/processed/dataproccasen/brecha.Rdata")
-```
+<!-- ## Casen 2017 -->
+<!-- ```{r} -->
+<!-- #codecasen17<-#sjPlot::view_df(cs2017)#hacer codebook -->
+<!-- ##sjPlot::view_df(cs2017, show.values = T, show.labels = T, max.len = 1000) -->
+<!--                 #hacer codebook para o8 -->
+
+<!-- #peones de... -->
+<!-- casen_obreros2017 = cs2017 %>% dplyr::filter(oficio4>=9211, oficio4<=9322) -->
+<!-- casen_obreros2017 <- casen_obreros2017 %>% dplyr::select(y0101, o23) -->
+<!-- casen_obreros2017<- na.omit(casen_obreros2017) -->
+
+<!-- #gerentes de -->
+<!-- #casen_gerente2017 = cs2017 %>% dplyr::filter(oficio4 %in% c(1210:1319)) # Filtro con todos los gerentes -->
+<!-- casen_gerente2017 = cs2017 %>% dplyr::filter(oficio4==1210) #gerente empresa -->
+<!-- casen_gerente2017 <- casen_gerente2017 %>% dplyr::select(oficio4, y0101,o23, o15,yrut,y0701,y0801) -->
+<!-- casen_gerente2017 = casen_gerente2017 %>% dplyr::filter(o23=="F") #gran empresa > 100 trabajadores -->
+<!-- casen_gerente2017 = casen_gerente2017 %>% dplyr::filter(o15 == 1) # empleador -->
+
+<!-- #casen_gerente2017 = casen_gerente2017 %>% dplyr::filter(y0701 <= 1000000) # empleador -->
 
 
-```{r}
-salario_gerente<- rbind(psych::describe(casen_gerente2000$yopraj),
-               psych::describe(casen_gerente2009$yopraj),
-               psych::describe(casen_gerente2017$y0701))
 
-save(salario_gerente, file = "input/data/processed/dataproccasen/salario_gerente.Rdata")
-```
+<!-- # yrut # retiro de utilidades -->
+<!-- #y0701 #independiente principal -->
+<!-- #table(casen_gerente2017$o15) -->
+<!-- # #sjPlot::view_df(casen_gerente2017, show.frq = T, max.len = 1000) -->
+
+<!-- brecha_real2017<-(median(casen_gerente2017$y0701,na.rm = T))/(median(casen_obreros2017$y0101,na.rm = T)) -->
+
+<!-- summary(casen_obreros2017$y0101) -->
+<!-- table(casen_gerente2017$y0701) -->
+<!-- brecha_real2017 -->
+
+<!-- summary(cs2017$y0101) -->
+<!-- summary(cs2017$y0701) -->
+
+<!-- ``` -->
 
 
-```{r}
-salario_obrero<- rbind(psych::describe(casen_obreros2000$yopraj),
-               psych::describe(casen_obreros2009$yopraj),
-               psych::describe(casen_obreros2017$y0101))
+<!-- ```{r} -->
+<!-- brecha_salarial<- rbind(psych::describe(brecha_real2000), -->
+<!--                psych::describe(brecha_real2009), -->
+<!--                psych::describe(brecha_real2017)) -->
 
-save(salario_obrero, file = "input/data/processed/dataproccasen/salario_obrero.Rdata")
-```
+<!-- save(brecha_salarial, file = "input/data/processed/dataproccasen/brecha.Rdata") -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- salario_gerente<- rbind(psych::describe(casen_gerente2000$yopraj), -->
+<!--                psych::describe(casen_gerente2009$yopraj), -->
+<!--                psych::describe(casen_gerente2017$y0701)) -->
+
+<!-- save(salario_gerente, file = "input/data/processed/dataproccasen/salario_gerente.Rdata") -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- salario_obrero<- rbind(psych::describe(casen_obreros2000$yopraj), -->
+<!--                psych::describe(casen_obreros2009$yopraj), -->
+<!--                psych::describe(casen_obreros2017$y0101)) -->
+
+<!-- save(salario_obrero, file = "input/data/processed/dataproccasen/salario_obrero.Rdata") -->
+<!-- ``` -->
+
+
+<!-- ``` -->
+

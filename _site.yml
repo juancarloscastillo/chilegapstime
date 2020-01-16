@@ -1,0 +1,16 @@
+name: "Project"
+output_dir: "."
+output:
+  html_document:
+    theme: cosmo
+    highlight: tango
+    css: 'style.css'
+navbar:
+  title: "Percepción y justificación desigualdad Chile"
+  left:
+  - text: "Paper"
+    href: paper.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/juancarloscastillo/equal_pay    
+    
