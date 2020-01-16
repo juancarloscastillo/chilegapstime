@@ -230,6 +230,61 @@ salario_justo_real
 
 ggsave(salario_justo_real,filename = "output/images/salario_justo_real.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
 ```
+## real vd percibido
+
+```{r}
+
+
+table_perrialob <-rbind(table_perob ,salario_obrero)
+str(table_justot)
+
+table_perrialob
+
+
+table_perrialob$ocup2 <- factor(table_perrialob$ocup, levels=c(1,3), labels=c("Salario percibido Obrero","Salario real Obrero"))
+
+table_perrialob <- ggplot(data=table_perrialob, aes(x=reorder(as.factor(year),-year), y=median, fill=ocup2)) +
+     geom_bar(position = 'dodge', stat='identity') +
+     geom_text(aes(label=format(median, big.mark = ",", scientific = FALSE), y=0), position=position_dodge(0.9), hjust=-0.25) +
+     theme_bw(base_size = 12) +
+     scale_y_continuous(labels = scales::comma) +
+     ylab('Salario (mediana)') + xlab('Años') +
+     scale_fill_brewer(palette="Paired") +
+     theme(legend.position="top") +
+     labs(fill = " ") +
+     guides(fill = guide_legend(reverse = TRUE)) +
+    coord_flip()
+ggsave(table_perrialob,filename = "output/images/table_perrialob.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+
+table_perrialob
+
+```
+
+```{r}
+table_perriager <-rbind(table_perger ,salario_gerente)
+str(table_justot)
+
+table_perrialob
+
+
+table_perriager$ocup2 <- factor(table_perriager$ocup, levels=c(2,4), labels=c("Salario percibido Gerente","Salario real Gerente"))
+
+table_perriager <- ggplot(data=table_perriager, aes(x=reorder(as.factor(year),-year), y=median, fill=ocup2)) +
+     geom_bar(position = 'dodge', stat='identity') +
+     geom_text(aes(label=format(median, big.mark = ",", scientific = FALSE), y=0), position=position_dodge(0.9), hjust=-0.25) +
+     theme_bw(base_size = 12) +
+     scale_y_continuous(labels = scales::comma) +
+     ylab('Salario (mediana)') + xlab('Años') +
+     scale_fill_brewer(palette="Paired") +
+     theme(legend.position="top") +
+     labs(fill = " ") +
+     guides(fill = guide_legend(reverse = TRUE)) +
+    coord_flip()
+ggsave(table_perrialob,filename = "output/images/table_perriager.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+
+table_perriager
+```
+
 
 ## Brechas salariales.
 
