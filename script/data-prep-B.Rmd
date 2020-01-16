@@ -4,8 +4,11 @@ author: ""
 output:
     html_document:
         smart: false
-editor_options:
-  chunk_output_type: console
+        toc: true
+        toc_float: true
+        toc_collapsed: true 
+    editor_options:
+    chunk_output_type: console
 ---
 
 ```{r include=FALSE}
@@ -719,5 +722,4 @@ names(clw3)
 <!-- ``` -->
 
 
-<!-- ``` -->
 

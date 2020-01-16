@@ -9,3 +9,9 @@ GPArotation
 lavaan
 corrplot
 stargazer
+Matrix
+lme4
+foreign
+texreg
+lattice
+ggeffects
