@@ -828,51 +828,169 @@ int
 
 ```{r}
 load("input/data/processed/clw3.RData")
+load("input/data/processed/dat99.RData")
+load("input/data/processed/dat09.RData")
+load("input/data/processed/dat19.RData")
 names(clw3)
 
-datw3 <- clw3[,c("lngap_perc","lngap_just","educ_rec","Quint","redis_dummy")]
+datw3 <- clw3[,c("lngap_perc","lngap_just","educ_rec","Quint","redis_dummy","year")]
 
-datw3$redis_dummy <- factor(datw3$redis_dummy,levels = c(0,1),labels = c("Desacuerdo","De Acuerdo"))
-datw3$educ_rec    <- factor(datw3$educ_rec,levels = c(1,2,3,4),labels =c("Ed.Básica","Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria"))
-datw3$Quint       <- factor(datw3$Quint,levels = c(1,2,3,4,5),labels = c("Quintil 1","Quintil 2","Quintil 3","Quintil 4","Quintil 5"))
+datw3$educ_rec    <- factor(datw3$educ_rec,levels = c(1,2,3,4),
+                            labels =c("Ed.Básica",
+                                      "Ed.Media",
+                                      "Ed.Sup.Incomp.",
+                                      "Ed.Universitaria"))
+datw3$Quint       <- factor(datw3$Quint,levels = c(1,2,3,4,5),
+                            labels = c("Quintil 1",
+                                       "Quintil 2",
+                                       "Quintil 3",
+                                       "Quintil 4",
+                                       "Quintil 5"))
 
 
-tab01<- psych::describe(datw3[,c("lngap_perc","lngap_just")],fast=TRUE)
+
+dat01<- subset(x = datw3,year==1999)
+dat02<- subset(x = datw3,year==2009)
+dat03<- subset(x = datw3,year==2019)
+
+dat01$income_pc <- dat99$ingreso_pc
+dat02$income_pc <- dat09$ingreso_pc
+dat03$income_pc <- dat19$ingreso_pc
+
+# Media (DS) ----------------------------------#
+
+tab01<- psych::describe(dat01[,c("lngap_perc","lngap_just")],fast=TRUE)
 tab01a<-select(tab01,n,mean,sd,min,max)
 tab01a<- round(tab01a,digits = 2)
 tab01a <- as.data.frame(tab01a)
+tab01a$var<- rownames(tab01a)
+
+tab01a <- tab01a %>% select(var,everything())
 
 tab01a$mean <- paste0(tab01a$mean," (",tab01a$sd,")")
 tab01a$sd <- NULL
-names(tab01a) <- c("n","m_sd_pct","min","max")
+names(tab01a) <- c("var","n","m_sd_pct","min","max")
 
-tab02<- rbind(
-questionr::freq(na.omit(datw3$educ_rec),valid = F),
-questionr::freq(na.omit(datw3$Quint),valid = F),
-questionr::freq(na.omit(datw3$redis_dummy),valid = F))
-tab02$min <- NA
-tab02$max <- NA
-names(tab02) <- c("n","m_sd_pct","min","max")
+tab02<- psych::describe(dat02[,c("lngap_perc","lngap_just")],fast=TRUE)
+tab02a<-select(tab02,n,mean,sd,min,max)
+tab02a<- round(tab02a,digits = 2)
+tab02a <- as.data.frame(tab02a)
+tab02a$var<- rownames(tab02a) 
+tab02a <- tab02a %>% select(var,everything())
+tab02a$mean <- paste0(tab02a$mean," (",tab02a$sd,")")
+tab02a$sd <- NULL
+names(tab02a) <- c("var","n","m_sd_pct","min","max")
 
-tab03<- rbind(tab01a,tab02)
-options(knitr.kable.NA = '')
+tab03<- psych::describe(dat03[,c("lngap_perc","lngap_just")],fast=TRUE)
+tab03a<-select(tab03,n,mean,sd,min,max)
+tab03a<- round(tab03a,digits = 2)
+tab03a <- as.data.frame(tab03a)
+tab03a$var<- rownames(tab03a) 
+
+tab03a <- tab03a %>% select(var,everything())
+
+tab03a$mean <- paste0(tab03a$mean," (",tab03a$sd,")")
+tab03a$sd <- NULL
+names(tab03a) <- c("var","n","m_sd_pct","min","max")
+
+# Frecuencias----------------------------------#
 
 
-tab03$var <- rownames(tab03)
-tab03$var[tab03$var=="lngap_perc"] <- "Percibida"
-tab03$var[tab03$var=="lngap_just"] <- "Justa"
+freq01<- rbind(
+na.omit(dat01) %>% group_by(educ_rec) %>% summarise(n=n()) %>% mutate(m_sd_pct=n/sum(n)*100,min=NA,max=NA) %>% rename(var=educ_rec),
+dat01 %>% select(Quint,income_pc) %>% group_by(Quint) %>% summarise(n=n(),m_sd_pct=mean(income_pc),min=min(income_pc),max=max(income_pc)) %>% rename(var=Quint) %>% na.omit())
+names(freq01) <- c("var","n","m_sd_pct","min","max")
+freq01$m_sd_pct <- round(freq01$m_sd_pct,2)
+freq01$min      <- round(freq01$min,2)
+freq01$max      <- round(freq01$max,2)
+table01<- rbind(tab01a,freq01)
+table01$var[table01$var=="lngap_perc"] <- "Percibida"
+table01$var[table01$var=="lngap_just"] <- "Justa"
 
-tab03$mod <- c("Brecha Salarial","Brecha Salarial","Educación","Educación","Educación","Educación",
-               "Ingreso","Ingreso","Ingreso","Ingreso","Ingreso", "Pref. Redistributivas","Pref. Redistributivas")
+table01$mod <- c("Brecha Salarial",
+                 "Brecha Salarial",
+                 "Educación",
+                 "Educación",
+                 "Educación",
+                 "Educación",
+                 "Ingreso",
+                 "Ingreso",
+                 "Ingreso",
+                 "Ingreso",
+                 "Ingreso")
+table01$year <- 1999
+table01 <- table01 %>% select(year,mod,everything())
+#------------------------------------------------------2009#
+freq02<- rbind(
+na.omit(dat02) %>% group_by(educ_rec) %>% summarise(n=n()) %>% mutate(m_sd_pct=n/sum(n)*100,min=NA,max=NA) %>% rename(var=educ_rec),
+dat02 %>% select(Quint,income_pc) %>% group_by(Quint) %>% summarise(n=n(),m_sd_pct=mean(income_pc),min=min(income_pc),max=max(income_pc)) %>% rename(var=Quint) %>% na.omit())
+names(freq02) <- c("var","n","m_sd_pct","min","max")
+freq02$m_sd_pct <- round(freq02$m_sd_pct,2)
+freq02$min      <- round(freq02$min,2)
+freq02$max      <- round(freq02$max,2)
+table02<- rbind(tab02a,freq02)
 
-tab03 <- select(tab03,mod,var,everything())
+table02$var[table02$var=="lngap_perc"] <- "Percibida"
+table02$var[table02$var=="lngap_just"] <- "Justa"
 
-sink("output/tables/desc.html")
-kable(tab03,format = "html",booktabs=T ,row.names = F,col.names = c("Dimensión","N","Variable/niveles","Media(DS)","Min","Max")) %>% 
-  kable_styling() %>% 
-    collapse_rows(columns = 1,valign = "middle")
-sink()
+table02$mod <- c("Brecha Salarial",
+                 "Brecha Salarial",
+                 "Educación",
+                 "Educación",
+                 "Educación",
+                 "Educación",
+                 "Ingreso",
+                 "Ingreso",
+                 "Ingreso",
+                 "Ingreso",
+                 "Ingreso")
+table02$year <- 2009
+table02 <- table02 %>% select(year,mod,everything())
+
+#------------------------------------------------------2019#
+freq03<- rbind(
+na.omit(dat03) %>% group_by(educ_rec) %>% summarise(n=n()) %>% mutate(m_sd_pct=n/sum(n)*100,min=NA,max=NA) %>% rename(var=educ_rec),
+dat03 %>% select(Quint,income_pc) %>% group_by(Quint) %>% summarise(n=n(),m_sd_pct=mean(income_pc),min=min(income_pc),max=max(income_pc)) %>% rename(var=Quint) %>% na.omit())
+names(freq03) <- c("var","n","m_sd_pct","min","max")
+freq03$m_sd_pct <- round(freq03$m_sd_pct,2)
+freq03$min      <- round(freq03$min,2)
+freq03$max      <- round(freq03$max,2)
+
+table03<- rbind(tab02a,freq03)
+
+table03$var[table03$var=="lngap_perc"] <- "Percibida"
+table03$var[table03$var=="lngap_just"] <- "Justa"
+
+table03$mod <- c("Brecha Salarial",
+                 "Brecha Salarial",
+                 "Educación",
+                 "Educación",
+                 "Educación",
+                 "Educación",
+                 "Ingreso",
+                 "Ingreso",
+                 "Ingreso",
+                 "Ingreso",
+                 "Ingreso")
+table03$year <- 2019
+table03 <- table03 %>% select(year,mod,everything())
+
+desc01 <- rbind(table01,table02,table03)
+
 ```
+
+```{r}
+options(knitr.kable.NA = '')
+kable(desc01,format = "html",
+      align = c("l"),
+      booktabs=T,
+      row.names = F,
+      col.names = c("Año","Dimensión","N","Variable/nivel","Media(DS)/%","Min","Max")) %>% 
+  kable_styling(full_width = F) %>% 
+  collapse_rows(columns = 1:2,valign = "middle",row_group_label_position = 'stack') %>% 
+  cat(., file = "output/tables/desc.html")
+```
+
 
 # Descriptivos 2
 
