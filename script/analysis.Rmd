@@ -280,7 +280,7 @@ table_perriager <- ggplot(data=table_perriager, aes(x=reorder(as.factor(year),-y
      labs(fill = " ") +
      guides(fill = guide_legend(reverse = TRUE)) +
     coord_flip()
-ggsave(table_perrialob,filename = "output/images/table_perriager.png",device = "png",width = 30,height = 15,dpi = "retina",units = "cm")
+ggsave(table_perrialob,filename = "output/images/table_perriager.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
 
 table_perriager
 ```
