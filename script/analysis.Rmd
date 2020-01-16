@@ -883,7 +883,7 @@ int
 
 
 ```{r}
-load("input/data/processed/clw3.RData")
+load("input/data/processed/clw3.Rdata")
 load("input/data/processed/dat99.RData")
 load("input/data/processed/dat09.RData")
 load("input/data/processed/dat19.RData")
@@ -1037,8 +1037,6 @@ desc01 <- rbind(table01,table02,table03)
 
 ```
 
-```{r}
-options(knitr.kable.NA = '')
 
 ```{r}
 options(knitr.kable.NA = '')
@@ -1048,23 +1046,10 @@ kable(desc01,format = "html",
       row.names = F,
       col.names = c("Año","Dimensión","N","Variable/nivel","Media(DS)/%","Min","Max")) %>%
   kable_styling(full_width = F) %>%
-  collapse_rows(columns = 1:2,valign = "middle",row_group_label_position = 'stack') %>%
-  cat(., file = "output/tables/desc.html")
+  collapse_rows(columns = 1:2,valign = "middle",row_group_label_position = 'stack') 
 
-tab03$var <- rownames(tab03)
-tab03$var[tab03$var=="lngap_perc"] <- "Percibida"
-tab03$var[tab03$var=="lngap_just"] <- "Justa"
-
-tab03$mod <- c("Brecha Salarial","Brecha Salarial","Educación","Educación","Educación","Educación",
-               "Ingreso","Ingreso","Ingreso","Ingreso","Ingreso")
-
-tab03 <- select(tab03,mod,var,everything())
-
-sink("output/tables/desc.html")
-kableExtra::kable(tab03,format = "html",booktabs=T ,row.names = F,col.names = c("Dimensión","N","Variable/niveles","Media(DS)","Min","Max")) %>%
-  kable_styling() %>%
-    collapse_rows(columns = 1,valign = "middle")
-sink()
+%>%
+  cat(., file = "output/tables/desc.html") # finalmente guardado como html desde el viewer para que aparezcan las líneas
 
 
 ```

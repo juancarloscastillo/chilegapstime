@@ -104,7 +104,7 @@ Como variables de control para las regresiones se incluyen los ingresos (operaci
 -->
 **Tabla 1**: Descriptivos generales 1999-2019
 
-<object width="800" height="800" data="output/tables/desc.html"></object>
+<object width="800" height="1250" data="output/tables/desc.html"></object>
 
 # Resultados
 
