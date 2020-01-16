@@ -913,6 +913,8 @@ dat01$income_pc <- dat99$ingreso_pc
 dat02$income_pc <- dat09$ingreso_pc
 dat03$income_pc <- dat19$ingreso_pc
 
+
+
 # Media (DS) ----------------------------------#
 
 tab01<- psych::describe(dat01[,c("lngap_perc","lngap_just")],fast=TRUE)
@@ -1037,6 +1039,9 @@ desc01 <- rbind(table01,table02,table03)
 
 ```{r}
 options(knitr.kable.NA = '')
+
+```{r}
+options(knitr.kable.NA = '')
 kable(desc01,format = "html",
       align = c("l"),
       booktabs=T,
@@ -1060,6 +1065,8 @@ kableExtra::kable(tab03,format = "html",booktabs=T ,row.names = F,col.names = c(
   kable_styling() %>%
     collapse_rows(columns = 1,valign = "middle")
 sink()
+
+
 ```
 
 
