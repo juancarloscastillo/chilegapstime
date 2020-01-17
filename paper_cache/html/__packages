@@ -1,8 +1,0 @@
-base
-dplyr
-sjlabelled
-sjPlot
-ggplot2
-knitr
-kableExtra
-stargazer
