@@ -11,7 +11,7 @@ navbar:
   - text: "Paper"
     href: paper.html
   - text: "Análisis"
-    href: script/data-prep-B.html
+    href: data-prep-B.html
   right:
     - icon: fa-github fa-lg
       href: https://github.com/juancarloscastillo/chilegapstime
