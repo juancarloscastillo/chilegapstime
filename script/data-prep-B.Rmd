@@ -5,10 +5,7 @@ output:
     html_document:
         smart: false
         toc: true
-        toc_float: true
-        toc_collapsed: true 
-    editor_options:
-    chunk_output_type: console
+        number_sections: true 
 ---
 
 ```{r include=FALSE}
