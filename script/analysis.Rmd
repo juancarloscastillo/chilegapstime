@@ -700,16 +700,12 @@ r99b<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint), data=dat99)
 r99c<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + lngap_perc, data=dat99)
 
 sink("output/tables/table99.html")
-stargazer(list(r99a,r99b,r99c), type= "html",
+stargazer::stargazer(list(r99a,r99b,r99c), type= "html",
           covariate.labels = c("Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria",
                                "Quintil 2", "Quintil 3","Quintil 2","Quintil 5",
                                "Brecha Percibida"),
           dep.var.labels = c("Brecha Percibida", "Brecha Justa"),
           dep.var.caption  = "Variables dependientes")
-sink()
-
-sink("output/tables/table99.html")
-stargazer(list(r99a,r99b,r99c), type= "html")
 sink()
 
 ```
@@ -726,7 +722,7 @@ r09b<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint), data=dat09)
 r09c<-lm(lngap_just ~ + as.factor(educ_rec) + as.factor(Quint) + lngap_perc, data=dat09)
 
 sink("output/tables/table09.html")
-stargazer(list(r09a,r09b,r09c), type= "html",
+stargazer::stargazer(list(r09a,r09b,r09c), type= "html",
           covariate.labels = c("Ed.Media", "Ed.Sup.Incomp.", "Ed.Universitaria",
                                "Quintil 2", "Quintil 3","Quintil 2","Quintil 5",
                                "Brecha Percibida"),
@@ -855,7 +851,8 @@ sink()
 # Evaluar interaccion del tiempo en la relacion entre brechas justas y percibidas.
 
 ```{r}
-load("input/data/processed/clw3.RData")
+load("input/data/processed/clw3.Rdata")
+
 ```
 
 ```{r}
@@ -868,14 +865,16 @@ library(sjPlot)
 ```{r}
 reg_year<- lm(lngap_just~lngap_perc*as.factor(year), data=clw3 )
 
-stargazer(reg_year, type="text")
+stargazer::stargazer(reg_year, type="text")
 
 ```
 
 ```{r}
-int<-plot_model(reg_year, type="int")
-int
- ggsave(int,filename = "output/images/int.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
+
+# Revisar - no corre
+# int<-sjPlot::plot_model(reg_year, type="int")
+# int
+#  ggsave(int,filename = "output/images/int.png",device = "png",width = 20,height = 15,dpi = "retina",units = "cm")
 
 ```
 
@@ -1040,13 +1039,15 @@ desc01 <- rbind(table01,table02,table03)
 
 ```{r}
 options(knitr.kable.NA = '')
-kable(desc01,format = "html",
+kableExtra::kable(desc01,format = "html",
       align = c("l"),
       booktabs=T,
       row.names = F,
       col.names = c("Año","Dimensión","N","Variable/nivel","Media(DS)/%","Min","Max")) %>%
   kable_styling(full_width = F) %>%
   collapse_rows(columns = 1:2,valign = "middle",row_group_label_position = 'stack') 
+
+#
 
 %>%
   cat(., file = "output/tables/desc.html") # finalmente guardado como html desde el viewer para que aparezcan las líneas
