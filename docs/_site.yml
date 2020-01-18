@@ -6,7 +6,7 @@ output:
     highlight: tango
     css: 'style.css'
 navbar:
-  title: "Percepción y justificación desigualdad Chile"
+  title: "Chile Gaps Time"
   left:
   - text: "Paper"
     href: paper.html

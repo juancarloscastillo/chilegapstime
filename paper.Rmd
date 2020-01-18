@@ -4,7 +4,9 @@ author: ""
 output:
     html_document:
         smart: false
-        toc: true
+#        toc: true
+#        toc_float: true
+#        toc_collapsed: true
         number_sections: true
 bibliography: "input/bib/My Library.bib"
 csl: "input/bib/apa6.csl"

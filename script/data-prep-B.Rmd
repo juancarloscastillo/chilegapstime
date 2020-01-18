@@ -5,6 +5,8 @@ output:
     html_document:
         smart: false
         toc: true
+        toc_float: true
+        toc_collapsed: true
         number_sections: true 
 ---
 

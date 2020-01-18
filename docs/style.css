@@ -7,6 +7,11 @@ h1.title {
 }
 
 
+p {
+  font-family: "Times New Roman", Times, serif; 
+  font-size: 22px;
+}
+
 
 
 /*
@@ -15,13 +20,14 @@ html, body {
   font-size: 20px;
   height: 100%;
   font-family: 'Garamond', serif;
-}
 
+}
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Garamond', serif;
+  font-family: 'Times New Roman', Times, serif;
   font-weight: 600;
-}
+
+
 
 h1.title {
   color: #FFFFFF;
@@ -80,7 +86,7 @@ img-circle {
 
 
 .navbar-default {
-  background-color: #97b6cc;
+  background-color: #6ca0ad;
   color: var(--pale-black);
   font-weight: 500;
   font-size: 18px;
@@ -89,7 +95,7 @@ img-circle {
 .navbar-default .navbar-brand {
   color: var(--pale-black);
   font-weight: 500;
-  font-size: 18px;
+  font-size: 28px;
 }
 
 
@@ -106,4 +112,3 @@ img-circle {
   font-weight: 300;
 }
 
-*/

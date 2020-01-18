@@ -1,0 +1,14 @@
+---
+title: "Chile ISSP gaps"
+author: " "
+output:
+    html_document:
+        smart: false
+---
+
+# ¿Menos desigualdad, más injusticia?
+## Cambios en percepción y justificación de desigualdad salarial en Chile entre 1999-2019
+
+(repo chilegapstime)
+
+link: [https://juancarloscastillo.github.io/chilegapstime/](https://juancarloscastillo.github.io/chilegapstime/)
