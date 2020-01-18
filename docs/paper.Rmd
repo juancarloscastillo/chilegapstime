@@ -13,7 +13,7 @@ csl: "../input/bib/apa6.csl"
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(warning = FALSE,message = FALSE, cache = TRUE)
-knitr::opts_knit$set(root.dir = "../")
+# knitr::opts_knit$set(root.dir = "../")
 options(scipen=999)
 rm(list=ls())
 ```
