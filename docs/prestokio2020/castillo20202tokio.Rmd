@@ -4,7 +4,7 @@ author: ".small[Juan Carlos Castillo <br><br> Departamento de Sociología - UCH 
 date: "2do Sem 2019"
 output:
   xaringan::moon_reader:
-    css: ["https://multinivel.netlify.com/docpres/xaringan_custom/xaringan-themer.css","https://multinivel.netlify.com/docpres/xaringan_custom/progress-bar.css"]
+    css: ["https://multinivel.netlify.com/docpres/xaringan_custom/xaringan-themer.css","https://multinivel.netlify.com/docpres/xaringan_custom/progress-bar.css","https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"]
     lib_dir: libs
     nature:
       slideNumberFormat:   |
@@ -64,7 +64,8 @@ layout: true
 class: animated, fadeIn
 
 ---
-class: roja, middle, center
+class: roja, middle, center,slideInRight
+
 
 ## CONTEXTO (1): 
 
@@ -89,7 +90,8 @@ Maldonado, L., Castillo, J. C., Iturra, J. C., Atria, J., & Meneses, F. (2019, N
 
 
 ---
-class: roja, middle, center
+class: roja, middle, center,slideInRight
+
 
 ## CONTEXTO (2): 
 
@@ -179,7 +181,8 @@ percepción de meritocracia: el caso de Chile
 
 
 ---
-class: roja, middle, center
+class: roja, middle, center,slideInRight
+
 
 ## Este trabajo:
 
@@ -197,10 +200,13 @@ class: roja, middle, center
 
 ![](../../input/images/tratoPNUD.png)
 ---
-class: inverse, middle, center
+class: inverse, center
 
+<br>
+<br>
 # _¿Se percibe en Chile un cambio en los niveles de desigualdad?_
 
+<br>
 --
 
 # _¿Ha disminuido la tolerancia/justificación de la desigualdad en Chile?_
@@ -252,7 +258,8 @@ Ideas:
 .small[Schroeder & Castillo (submitted)]
 
 ---
-class: roja, center, middle
+class: roja, center, middle,slideInRight
+
 
 # Metodología
 
@@ -282,7 +289,8 @@ class: roja, center, middle
 - modelos de regresión
 
 ---
-class: roja, middle, center
+class: roja, middle, center,slideInRight
+
 
 ## Resultados 1: 
 
@@ -323,7 +331,8 @@ class: roja, middle, center
 ![:scale 85%](../../output/images/gapjus_educ.png)
 
 ---
-class: roja, middle, center
+class: roja, middle, center,slideInRight
+
 
 ## Resultados 2: 
 
@@ -339,7 +348,8 @@ class: roja, middle, center
 
 
 ---
-class: inverse
+class: inverse,slideInRight
+
 
 # Discusión
 
